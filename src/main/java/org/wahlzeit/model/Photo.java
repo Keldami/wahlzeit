@@ -131,6 +131,12 @@ public class Photo extends DataObject {
 	@Parent
 	Key parent = ObjectManager.applicationRootKey;
 
+	/*
+	 * location of the photo
+	 * initializes location at Coordinates x=0.0 y=0.0 z=0.0
+	 */
+	Location location = new Location();
+
 	/**
 	 *
 	 */
@@ -417,5 +423,22 @@ public class Photo extends DataObject {
 	public void setNoNewPraise() {
 		noVotesAtLastNotification = noVotes;
 		incWriteCount();
+	}
+
+	/*
+	 * @methodtype get
+	 */
+	public Location getLocation() {
+		return location;
+	}
+
+	/*
+	 * @methodtype set
+	 */
+	public void setLocation(Location location) {
+		if (location == null) {
+			throw new IllegalArgumentException("location cannot be null");
+		}
+		this.location = location;
 	}
 }
