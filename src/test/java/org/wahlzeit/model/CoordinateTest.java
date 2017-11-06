@@ -11,6 +11,7 @@ public class CoordinateTest {
     Coordinate two;
     Coordinate three;
     Coordinate four;
+    NoWhereCoordinate nowhere;
 
     double MAX = Double.MAX_VALUE;
     double MIN = Double.MIN_VALUE;
@@ -22,10 +23,35 @@ public class CoordinateTest {
         two = new Coordinate(1.0, 1.0, 1.0);
         three = new Coordinate();
         four = new Coordinate(2.0, 3.0, -1.0);
+        nowhere = new NoWhereCoordinate();
 
         assertTrue(one.isEqual(two));
         assertFalse(one.isEqual(four));
         assertTrue(three.getX() == 0.0);
+    }
+
+    @Test
+    public void NoWhereTest() {
+        nowhere = new NoWhereCoordinate();
+        int nowhereHash = 1627372111;
+
+        try {
+            nowhere.setX();
+            nowhere.setY();
+            nowhere.setZ();
+        } catch (IllegalArgumentException e) {
+        }
+
+        assert(Double.compare(nowhere.getX(), Double.NaN) == 0);
+        assert(Double.compare(nowhere.getY(), Double.NaN) == 0);
+        assert(Double.compare(nowhere.getZ(), Double.NaN) == 0);
+
+        assert(Double.compare(nowhere.getDistance(new Coordinate()), Double.NaN) == 0);
+        assert(nowhere.isEqual(new Coordinate()) == false);
+
+        assert(nowhere.hashCode() == nowhereHash);
+        assertFalse(nowhereHash == (new Coordinate()).hashCode() );
+
     }
 
     @Test
@@ -137,7 +163,38 @@ public class CoordinateTest {
         assert(four.isEqual(four));
     }
 
+    @Test
+    public void equalsTest() {
+        one = new Coordinate();
+        two = new Coordinate();
 
+
+        assert(one.equals(two));
+        assert(two.equals(one));
+        assert(one.equals(one));
+        assert(two.equals(two));;
+
+        one = new Coordinate(3, 2, 1);
+        two = new Coordinate( 3, 2, 1);
+
+        assert(one.equals(two));
+        assert(two.equals(one));
+        assert(one.equals(one));
+        assert(two.equals(two));
+
+        three = new Coordinate(1, 2, 3);
+        four = new Coordinate(-1, -2, -3);
+        assertFalse(three.equals(four));
+        assertFalse(four.equals(three));
+        assert(three.equals(three));
+        assert(four.equals(four));
+
+        nowhere = new NoWhereCoordinate();
+
+        assertFalse(one.equals(nowhere));
+        assert(nowhere.equals(nowhere));
+
+    }
     @Test
     public void squareTest() {
         one = new Coordinate();

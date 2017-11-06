@@ -97,31 +97,51 @@ public class Coordinate {
         double diffy = this.getY() - other.getY();
         double diffz = this.getZ() - other.getZ();
 
-
         double ret = Math.sqrt(square(diffx) + square(diffy) + square(diffz));
         if (Double.isInfinite(ret)){
             throw new IllegalStateException("The distance is infinity. Illegal state.");
         }
-
         return ret;
     }
     /*
      * compares to a coordinate
-     * if the coordinates are the same the locations are equal
+     * if the coordinates are the same, the locations  needn't be equal !!
      */
     public boolean isEqual(Coordinate other) {
-
-        if(	this.getX() == other.getX() &&
-            this.getY() == other.getY() &&
-            this.getZ() == other.getZ()) {
-
+        if( Double.compare(this.getX(), other.getX()) == 0 &&
+                Double.compare(this.getY(), other.getY()) == 0 &&
+                Double.compare(this.getZ(), other.getZ()) == 0 ) {
             return true;
         }
-
         return false;
     }
 
-    public double square(double val) {
+    @Override
+    public boolean equals(Object obj) {
+
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj instanceof Coordinate && this.isEqual( (Coordinate) obj )){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode(){
+
+        int ret = 17;
+        ret = 31 * ret + Double.valueOf(this.getX()).hashCode();
+        ret = 31 * ret + Double.valueOf(this.getY()).hashCode();
+        ret = 31 * ret + Double.valueOf(this.getZ()).hashCode();
+
+        return ret;
+    }
+
+    protected double square(double val) {
+
         double ret = Math.pow(val, 2);
         if(Double.isInfinite(ret)) {
             throw new IllegalStateException("Overflow at double square");
@@ -129,12 +149,10 @@ public class Coordinate {
         return ret;
     }
 
-
     /*
      * Current Coordinate to String
      */
     public String toString() {
-
         return "Coordinate: x=" + x + " y=" + y + " z=" + z;
     }
 }

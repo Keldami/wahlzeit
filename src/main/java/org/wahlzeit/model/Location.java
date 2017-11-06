@@ -3,7 +3,7 @@ package org.wahlzeit.model;
 
 public class Location {
 
-    private Coordinate coordinate;
+    private Coordinate coordinate = new NoWhereCoordinate();
 
     /*
      *  @methodtype constructor
@@ -47,17 +47,5 @@ public class Location {
             throw new IllegalArgumentException("You can't get distance to null");
         }
         return coordinate.getDistance(other);
-    }
-
-    /*
-     * if coordinates are equal then the location is true
-     */
-    @Override
-    public boolean equals(Object obj) {
-
-        if (obj instanceof Location && coordinate.isEqual( ((Location) obj).getCoordinate())){
-            return true;
-        }
-        return false;
     }
 }

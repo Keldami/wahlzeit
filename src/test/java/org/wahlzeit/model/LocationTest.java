@@ -61,27 +61,4 @@ public class LocationTest {
         assert(loc6.getCoordinate().getZ() == 0);
     }
 
-    @Test
-    public void equalsTest() {
-        loc4 = new Location();
-        loc5 = new Location();
-        loc6 = new Location();
-        Coordinate one = new Coordinate();
-        Coordinate two = new Coordinate(1, 2, 3);
-        Coordinate three = new Coordinate(3, 2, 1);
-
-        assert(loc4.equals(loc5));
-        assert(loc5.equals(loc4));
-
-        loc4.setCoordinate(one);
-        loc5.setCoordinate(two);
-        Assert.assertFalse(loc4.equals(loc5));
-
-        loc6.setCoordinate(three);
-        Assert.assertFalse(loc4.equals(loc6));
-
-        Assert.assertFalse(loc5.equals(loc6));
-
-    }
-
 }
