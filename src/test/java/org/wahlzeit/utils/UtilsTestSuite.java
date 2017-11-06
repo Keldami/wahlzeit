@@ -9,5 +9,5 @@ import org.junit.runners.Suite;
         StringUtilTest.class,
         VersionTest.class
 })
-public class utilsTestSuite {
+public class UtilsTestSuite {
 }

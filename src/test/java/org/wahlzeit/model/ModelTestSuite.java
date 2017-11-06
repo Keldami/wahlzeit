@@ -26,5 +26,5 @@ import org.wahlzeit.model.persistence.GcsAdapterTest;
         UserStatusTest.class,
         ValueTest.class
 })
-public class modelTestSuite {
+public class ModelTestSuite {
 }
