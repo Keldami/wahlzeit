@@ -8,7 +8,7 @@ import org.wahlzeit.services.mailing.EmailServiceTest;
 @Suite.SuiteClasses({
         EmailServiceTest.class,
         EmailAddressTest.class,
-       // LogBuilderTest.class  it's kinda broken right now
+        LogBuilderTest.class
 })
 public class EmailServiceTestSuite {
 }
