@@ -1,7 +1,7 @@
 package org.wahlzeit;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
-//import org.wahlzeit.handlers.handlerTestSuite;
+import org.wahlzeit.handlers.HandlerTestSuite;
 import org.wahlzeit.services.EmailServiceTestSuite;
 import org.wahlzeit.model.ModelTestSuite;
 import org.wahlzeit.utils.UtilsTestSuite;
@@ -14,7 +14,7 @@ import org.wahlzeit.utils.UtilsTestSuite;
 
 @Suite.SuiteClasses({
         EmailServiceTestSuite.class,
-        // handlerTestSuite.class, //--offlimit for now
+        HandlerTestSuite.class,
         ModelTestSuite.class,
         UtilsTestSuite.class
 

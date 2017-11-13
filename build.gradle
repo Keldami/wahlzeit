@@ -7,14 +7,11 @@ sourceCompatibility = 1.7 // Java version compatibility to use when compiling Ja
 targetCompatibility = 1.7 // Java version to generate classes for.
 
 buildscript {
-    ext {
-        gaeVersion = '1.9.42'
-    }
     repositories {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.google.appengine:gradle-appengine-plugin:' + gaeVersion
+        classpath 'com.google.appengine:gradle-appengine-plugin:+'
     }
 }
 
@@ -34,27 +31,27 @@ repositories {
 }
 
 dependencies {
-    appengineSdk 'com.google.appengine:appengine-java-sdk:' + gaeVersion
+    appengineSdk 'com.google.appengine:appengine-java-sdk:+'
 
-    compile 'com.google.appengine:appengine-api-1.0-sdk:' + gaeVersion
-    compile 'com.google.appengine.tools:appengine-gcs-client:0.4.4'
-    compile 'com.googlecode.objectify:objectify:5.1.5'
+    compile 'com.google.appengine:appengine-api-1.0-sdk:+'
+    compile 'com.google.appengine.tools:appengine-gcs-client:+'
+    compile 'com.googlecode.objectify:objectify:+'
     compile 'javax.servlet:servlet-api:2.5' // GAE works with only with 2.5
-    compile 'commons-fileupload:commons-fileupload:1.2'
+    compile 'commons-fileupload:commons-fileupload:+'
 
     // testing dependencies
-    testCompile 'com.google.appengine:appengine-testing:' + gaeVersion
-    testCompile 'com.google.appengine:appengine-api-stubs:' + gaeVersion
-    testCompile 'com.google.appengine:appengine-api-labs:' + gaeVersion
-    testCompile 'com.google.appengine:appengine-tools-sdk:1.9.24'
+    testCompile 'com.google.appengine:appengine-testing:+'
+    testCompile 'com.google.appengine:appengine-api-stubs:+'
+    testCompile 'com.google.appengine:appengine-api-labs:+'
+    testCompile 'com.google.appengine:appengine-tools-sdk:+'
     testCompile 'junit:junit:4.+'
-    testCompile 'org.mockito:mockito-core:1.10.19'
+    testCompile 'org.mockito:mockito-core:2.11.0'
 }
 
 test {
-    filter {
-        includeTestsMatching "org.wahlzeit.*"
-    }
+    //if we test the TestSuites then we can get IllegalArgumentExceptions because some test is run twice
+    //-todo make the test durable with more than 1 testrun
+    exclude '**/*TestSuite.class'
 }
 
 appengine {

@@ -1,30 +1,29 @@
 package org.wahlzeit.model;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
-import org.wahlzeit.model.persistence.AbstractAdapterTest;
-import org.wahlzeit.model.persistence.DatastoreAdapterTest;
-import org.wahlzeit.model.persistence.GcsAdapterTest;
+import org.wahlzeit.model.persistence.PersistenceTestSuite;
 
 @RunWith(Suite.class)
 
 @Suite.SuiteClasses({
 
     //persistence
-         // AbstractAdapterTest.class, //--giving unpleasent red messages by just running the test
-         // DatastoreAdapterTest.class, //--giving unpleasent red messages by just running the test
-         // GcsAdapterTest.class,     //--giving unpleasent red messages by just running the test
+        PersistenceTestSuite.class,
 
     //other model tests
         AccessRightsTest.class,
         CoordinateTest.class,
         FlagReasonTest.class,
         GenderTest.class,
-        //GuestTest.class, // --giving unpleasent red messages by just running the test
+        GuestTest.class,
         LocationTest.class,
         PhotoFilterTest.class,
         TagsTest.class,
         UserStatusTest.class,
-        ValueTest.class
+        ValueTest.class,
+        LeninPhotoFactoryTest.class,
+        LeninPhotoManagerTest.class,
+
 })
 public class ModelTestSuite {
 }
