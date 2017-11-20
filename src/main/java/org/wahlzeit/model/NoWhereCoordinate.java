@@ -2,39 +2,42 @@ package org.wahlzeit.model;
 
 
 // null coordinate for location
-public class NoWhereCoordinate extends Coordinate{
+public class NoWhereCoordinate implements Coordinate{
 
-    private double x, y, z;
+
 
     public NoWhereCoordinate() {
-        super();
-        this.x = Double.NaN;
-        this.y = Double.NaN;
-        this.z = Double.NaN;
     }
 
-    public double getX() {
+    @Override
+    public double getCartesianDistance(Coordinate other) {
         return Double.NaN;
     }
 
-    public double getY() {
+    @Override
+    public double getSphericDistance(Coordinate other) {
         return Double.NaN;
     }
 
-    public double getZ() {
-        return Double.NaN;
+    @Override
+    public CartesianCoordinate asCartesianCoordinate() {
+        return null;
     }
 
-    public void setX(){
-        throw new IllegalArgumentException("You can't set x to nowhere");
+    @Override
+    public SphericCoordinate asSphericCoordinate() {
+        return null;
     }
 
-    public void setY(){
-        throw new IllegalArgumentException("You can't set y to nowhere");
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
 
-    public void setZ(){
-        throw new IllegalArgumentException("You can't set z to nowhere");
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
     }
 
     public double getDistance(Coordinate other) {
@@ -46,6 +49,6 @@ public class NoWhereCoordinate extends Coordinate{
     }
 
     public String toString() {
-        return "Coordinate: x=" + x + " y=" + y + " z=" + z;
+        return "NoWhereCoordinate in NoWhere";
     }
 }

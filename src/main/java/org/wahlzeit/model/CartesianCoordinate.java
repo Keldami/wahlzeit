@@ -4,15 +4,17 @@ import java.lang.Math;
 /*
  * Coordinate gets cartesian coordinates of a picture
  */
-public class Coordinate {
+public class CartesianCoordinate implements Coordinate{
+
     private double x;
     private double y;
     private double z;
+    private SphericCoordinate asSpheric = null;
 
     /*
      *  @methodtype constructor
      */
-    public Coordinate(double x, double y, double z) {
+    public CartesianCoordinate(double x, double y, double z) {
         this.setX(x);
         this.setY(y);
         this.setZ(z);
@@ -21,7 +23,7 @@ public class Coordinate {
     /*
      *  @methodtype constructor
      */
-    public Coordinate() {
+    public CartesianCoordinate() {
         this.setX(0);
         this.setY(0);
         this.setZ(0);
@@ -56,6 +58,10 @@ public class Coordinate {
             throw new IllegalArgumentException("The double value for x is too big");
         }
         this.x = x;
+
+        if(asSpheric != null) {
+            updateSphericCoordinate(asSpheric);
+        }
     }
 
     /*
@@ -66,6 +72,10 @@ public class Coordinate {
             throw new IllegalArgumentException("The double value for y is too big");
         }
         this.y = y;
+
+        if(asSpheric != null) {
+            updateSphericCoordinate(asSpheric);
+        }
     }
 
     /*
@@ -76,41 +86,105 @@ public class Coordinate {
             throw new IllegalArgumentException("The double value for z is too big");
         }
         this.z = z;
+
+        if(asSpheric != null) {
+            updateSphericCoordinate(asSpheric);
+        }
     }
 
     /*
      *  @methodtype set
      */
-    public void setCoordinates(double x, double y, double z) {
+    public void setCartesianCoordinates(double x, double y, double z) {
         setX(x);
         setY(y);
         setZ(z);
     }
 
-    /*
-     * Get's the euclidian distance to another coordinate from the current locations coordinate
-     * @methodtype get
-     */
-    public double getDistance(Coordinate other) {
+    // we have asCartesianCoordinate for this but still :)
+    // @methodtype get
+    public CartesianCoordinate getCartesianCoordinate() { return this; }
 
-        double diffx = this.getX() - other.getX();
-        double diffy = this.getY() - other.getY();
-        double diffz = this.getZ() - other.getZ();
+    @Override
+    public double getCartesianDistance(Coordinate other) {
 
-        double ret = Math.sqrt(square(diffx) + square(diffy) + square(diffz));
-        if (Double.isInfinite(ret)){
+        double diffx = this.asCartesianCoordinate().getX() - other.asCartesianCoordinate().getX();
+        double diffy = this.asCartesianCoordinate().getY() - other.asCartesianCoordinate().getY();
+        double diffz = this.asCartesianCoordinate().getZ() - other.asCartesianCoordinate().getZ();
+
+        double ret = Math.sqrt(this.asCartesianCoordinate().square(diffx) +
+                               this.asCartesianCoordinate().square(diffy) +
+                               this.asCartesianCoordinate().square(diffz));
+
+        if (Double.isInfinite(ret)) {
             throw new IllegalStateException("The distance is infinity. Illegal state.");
         }
         return ret;
     }
+
+    //TODO implement true getSphericDistance
+    @Override
+    public double getSphericDistance(Coordinate other) {
+        return this.asCartesianCoordinate().getCartesianDistance(other.asCartesianCoordinate());
+    }
+
     /*
-     * compares to a coordinate
-     * if the coordinates are the same, the locations  needn't be equal !!
-     */
+    * Get's the distance to another coordinate from the current locations coordinate
+    * @methodtype get
+    */
+    public double getDistance(Coordinate other) {
+
+        if(other instanceof CartesianCoordinate){
+
+            return this.getCartesianDistance(other);
+
+        } else if(other instanceof SphericCoordinate){
+
+            return this.getSphericDistance(other);
+
+        } else {
+            //for NoWhereCoordinate or undefined coordinate
+            return Double.NaN;
+
+        }
+
+    }
+
+    //@methodtype interpreter
+    //returns either a new SphericCoordinate or creates a specific for this CartesianCoordinate
+    @Override
+    public SphericCoordinate asSphericCoordinate() {
+        if(asSpheric == null) {
+            asSpheric = new SphericCoordinate();
+            updateSphericCoordinate(asSpheric);
+        }
+
+        return asSpheric;
+    }
+
+    @Override
+    public CartesianCoordinate asCartesianCoordinate() {
+        return this;
+    }
+
+
+
+    /*
+    * compares to a coordinate
+    * if the coordinates are the same, the locations  needn't be equal !!
+    * We cast other to Cartesian Coordinate because we check if it's a CartesianCoordinate
+    * if its not isEquals returns false even if it's in the same location
+    */
+    @Override
     public boolean isEqual(Coordinate other) {
-        if( Double.compare(this.getX(), other.getX()) == 0 &&
-                Double.compare(this.getY(), other.getY()) == 0 &&
-                Double.compare(this.getZ(), other.getZ()) == 0 ) {
+
+        if(!(other instanceof CartesianCoordinate)) {
+            return false;
+        }
+
+        if( Double.compare(this.getX(),  other.asCartesianCoordinate().getX()) == 0 &&
+                Double.compare(this.getY(), other.asCartesianCoordinate().getY()) == 0 &&
+                Double.compare(this.getZ(), other.asCartesianCoordinate().getZ()) == 0 ) {
             return true;
         }
         return false;
@@ -123,7 +197,7 @@ public class Coordinate {
             return true;
         }
 
-        if (obj instanceof Coordinate && this.isEqual( (Coordinate) obj )){
+        if (obj instanceof CartesianCoordinate && this.isEqual( (Coordinate) obj )){
             return true;
         }
         return false;
@@ -153,6 +227,23 @@ public class Coordinate {
      * Current Coordinate to String
      */
     public String toString() {
-        return "Coordinate: x=" + x + " y=" + y + " z=" + z;
+        return "Coordinate: {x=" + x + " y=" + y + " z=" + z + " }";
+    }
+
+
+    //to update spheric coordinate object
+//    radius = sqrt(x^2 + y^2 + z^2)
+//    latitude = arcsin(y/radius)
+//    longitude = atan2(x, -z)
+    private void updateSphericCoordinate(SphericCoordinate asSpheric) {
+        if(asSpheric != null) {
+            double radius = Math.sqrt(square(this.getX()) + square(this.getY()) + square(this.getZ()));
+            double latitude = Math.toDegrees(Math.asin(this.getY() / radius));
+            double longitude = Math.toDegrees(Math.atan2(this.getX(), -this.getZ()));
+
+            asSpheric.setLatitude(latitude);
+            asSpheric.setLongitude(longitude);
+            asSpheric.setRadius(radius);
+        }
     }
 }

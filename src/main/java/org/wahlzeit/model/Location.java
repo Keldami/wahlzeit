@@ -17,9 +17,10 @@ public class Location {
 
     /*
      *  @methodtype constructor
+     *  default is new CartesianCoordinate
      */
     public Location() {
-        setCoordinate(new Coordinate());
+        setCoordinate(new CartesianCoordinate());
     }
 
     /*
