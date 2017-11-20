@@ -83,6 +83,7 @@ public abstract class ModelMain extends AbstractMain {
 	public void saveAll() throws IOException{
 		PhotoCaseManager.getInstance().savePhotoCases();
 		PhotoManager.getInstance().savePhotos();
+		LeninPhotoManager.getInstance().savePhotos();
 		UserManager.getInstance().saveClients();
 		GlobalsManager.getInstance().saveGlobals();
 	}
