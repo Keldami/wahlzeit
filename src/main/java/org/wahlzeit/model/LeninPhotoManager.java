@@ -1,7 +1,10 @@
 package org.wahlzeit.model;
 
+import com.googlecode.objectify.annotation.Subclass;
+
 import java.util.logging.Logger;
 
+@Subclass
 public class LeninPhotoManager extends PhotoManager {
 
     protected static LeninPhotoManager instance = new LeninPhotoManager();

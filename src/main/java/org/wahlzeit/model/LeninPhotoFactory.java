@@ -1,10 +1,12 @@
 package org.wahlzeit.model;
 
 
+import com.googlecode.objectify.annotation.Subclass;
 import org.wahlzeit.services.LogBuilder;
 
 import java.util.logging.Logger;
 
+@Subclass
 public class LeninPhotoFactory extends PhotoFactory {
 
     private static final Logger log = Logger.getLogger(LeninPhotoFactory.class.getName());
