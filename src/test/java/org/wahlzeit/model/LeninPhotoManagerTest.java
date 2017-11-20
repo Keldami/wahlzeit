@@ -31,6 +31,7 @@ public class LeninPhotoManagerTest {
 
     @Test
     public void initTest() {
+        manager = LeninPhotoManager.getInstance();
         assertTrue(manager instanceof LeninPhotoManager);
     }
 }

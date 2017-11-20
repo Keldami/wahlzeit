@@ -33,8 +33,9 @@ public class LocationTest {
     public void initTest() {
 
         loc4 = new Location();
-        loc5 = new Location(new Coordinate());
-        loc6 = new Location(new Coordinate(1, 2, 3));
+        loc5 = new Location(new CartesianCoordinate());
+        loc6 = new Location(new CartesianCoordinate(1, 2, 3));
+
 
     }
 
@@ -50,15 +51,15 @@ public class LocationTest {
         } catch (IllegalArgumentException e) {
         }
 
-        loc5.setCoordinate(new Coordinate(1, 2, 3));
-        assert(loc5.getCoordinate().getX() == 1.0);
-        assert(loc5.getCoordinate().getY() == 2.0);
-        assert(loc5.getCoordinate().getZ() == 3.0);
+        loc5.setCoordinate(new CartesianCoordinate(1, 2, 3));
+        assert(loc5.getCoordinate().asCartesianCoordinate().getX() == 1.0);
+        assert(loc5.getCoordinate().asCartesianCoordinate().getY() == 2.0);
+        assert(loc5.getCoordinate().asCartesianCoordinate().getZ() == 3.0);
 
-        loc6.setCoordinate(new Coordinate());
-        assert(loc6.getCoordinate().getX() == 0);
-        assert(loc6.getCoordinate().getY() == 0);
-        assert(loc6.getCoordinate().getZ() == 0);
+        loc6.setCoordinate(new CartesianCoordinate());
+        assert(loc6.getCoordinate().asCartesianCoordinate().getX() == 0);
+        assert(loc6.getCoordinate().asCartesianCoordinate().getY() == 0);
+        assert(loc6.getCoordinate().asCartesianCoordinate().getZ() == 0);
     }
 
 }

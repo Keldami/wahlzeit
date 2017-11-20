@@ -2,27 +2,30 @@ package org.wahlzeit.model;
 
 import org.junit.*;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-public class CoordinateTest {
+public class CartesianCoordinateTest {
 
-    Coordinate one;
-    Coordinate two;
-    Coordinate three;
-    Coordinate four;
+    CartesianCoordinate one;
+    CartesianCoordinate two;
+    CartesianCoordinate three;
+    CartesianCoordinate four;
     NoWhereCoordinate nowhere;
 
     double MAX = Double.MAX_VALUE;
     double MIN = Double.MIN_VALUE;
+    //if epsilon not high enough conversions get wrecked
+    double EPSILON = 1E-10;
 
 
     @Test
     public void initTest() {
-        one = new Coordinate(1.0, 1.0, 1.0);
-        two = new Coordinate(1.0, 1.0, 1.0);
-        three = new Coordinate();
-        four = new Coordinate(2.0, 3.0, -1.0);
+        one = new CartesianCoordinate(1.0, 1.0, 1.0);
+        two = new CartesianCoordinate(1.0, 1.0, 1.0);
+        three = new CartesianCoordinate();
+        four = new CartesianCoordinate(2.0, 3.0, -1.0);
         nowhere = new NoWhereCoordinate();
 
         assertTrue(one.isEqual(two));
@@ -30,29 +33,6 @@ public class CoordinateTest {
         assertTrue(three.getX() == 0.0);
     }
 
-    @Test
-    public void NoWhereTest() {
-        nowhere = new NoWhereCoordinate();
-        int nowhereHash = 1627372111;
-
-        try {
-            nowhere.setX();
-            nowhere.setY();
-            nowhere.setZ();
-        } catch (IllegalArgumentException e) {
-        }
-
-        assert(Double.compare(nowhere.getX(), Double.NaN) == 0);
-        assert(Double.compare(nowhere.getY(), Double.NaN) == 0);
-        assert(Double.compare(nowhere.getZ(), Double.NaN) == 0);
-
-        assert(Double.compare(nowhere.getDistance(new Coordinate()), Double.NaN) == 0);
-        assert(nowhere.isEqual(new Coordinate()) == false);
-
-        assert(nowhere.hashCode() == nowhereHash);
-        assertFalse(nowhereHash == (new Coordinate()).hashCode() );
-
-    }
 
     @Test
     public void testInvalidArgumentInitCoordinate() {
@@ -60,103 +40,131 @@ public class CoordinateTest {
         double inf = MAX + MAX;
 
         try {
-            one = new Coordinate(Double.NaN, 0, 0);
+            one = new CartesianCoordinate(Double.NaN, 0, 0);
         } catch (IllegalArgumentException e) {
         }
 
         try {
-            one = new Coordinate(0, Double.NaN, 0);
+            one = new CartesianCoordinate(0, Double.NaN, 0);
         } catch (IllegalArgumentException e) {
         }
 
         try {
-            one = new Coordinate(0, 0, Double.NaN);
+            one = new CartesianCoordinate(0, 0, Double.NaN);
         } catch (IllegalArgumentException e) {
         }
 
         try {
-            two = new Coordinate(inf, 0, 0);
+            two = new CartesianCoordinate(inf, 0, 0);
             assert(Double.isInfinite(two.getX()));
         } catch (IllegalArgumentException e) {
         }
 
         try {
-            two = new Coordinate(0, inf, 0);
+            two = new CartesianCoordinate(0, inf, 0);
             assert(Double.isInfinite(two.getY()));
         } catch (IllegalArgumentException e){
         }
 
         try {
-            two = new Coordinate(0, 0, inf);
+            two = new CartesianCoordinate(0, 0, inf);
             assert(Double.isInfinite(two.getZ()));
         } catch (IllegalArgumentException e) {
         }
     }
 
     @Test
-    public void setCoordinatesTest() {
-        one = new Coordinate();
-        one.setCoordinates(1,2, 3);
-        two = new Coordinate(1, 2, 3);
+    public void setCartesianCoordinatesTest() {
+        one = new CartesianCoordinate();
+        one.setCartesianCoordinates(1,2, 3);
+        two = new CartesianCoordinate(1, 2, 3);
         assert(one.isEqual(two) && two.isEqual(one));
 
-        three = new Coordinate();
+        three = new CartesianCoordinate();
         try {
-            three.setCoordinates(Double.NaN, 0, 0);
-            three.setCoordinates(0, Double.NaN, 0);
-            three.setCoordinates(0, 0, Double.NaN);
+            three.setCartesianCoordinates(Double.NaN, 0, 0);
+            three.setCartesianCoordinates(0, Double.NaN, 0);
+            three.setCartesianCoordinates(0, 0, Double.NaN);
 
-            three.setCoordinates(Double.POSITIVE_INFINITY, 0, 0);
-            three.setCoordinates(0, Double.POSITIVE_INFINITY, 0);
-            three.setCoordinates(0, 0, Double.POSITIVE_INFINITY);
+            three.setCartesianCoordinates(Double.POSITIVE_INFINITY, 0, 0);
+            three.setCartesianCoordinates(0, Double.POSITIVE_INFINITY, 0);
+            three.setCartesianCoordinates(0, 0, Double.POSITIVE_INFINITY);
 
-            three.setCoordinates(Double.NEGATIVE_INFINITY, 0, 0);
-            three.setCoordinates(0, Double.NEGATIVE_INFINITY, 0);
-            three.setCoordinates(0, 0, Double.NEGATIVE_INFINITY);
+            three.setCartesianCoordinates(Double.NEGATIVE_INFINITY, 0, 0);
+            three.setCartesianCoordinates(0, Double.NEGATIVE_INFINITY, 0);
+            three.setCartesianCoordinates(0, 0, Double.NEGATIVE_INFINITY);
 
         } catch (IllegalArgumentException e){
         }
     }
 
     @Test
+    public void SphericCoordinateParamConversionTest(){
+
+        one = new CartesianCoordinate(0.5, 0.5, 0.5);
+
+        double longitude = one.asSphericCoordinate().getLongitude();
+        double latitude = one.asSphericCoordinate().getLatitude();
+        double radius = one.asSphericCoordinate().getRadius();
+
+        SphericCoordinate spheric = new SphericCoordinate(latitude, longitude, radius);
+        double x = spheric.asCartesianCoordinate().getX();
+        double y = spheric.asCartesianCoordinate().getY();
+        double z = spheric.asCartesianCoordinate().getZ();
+
+//        System.out.println(x);
+//        System.out.println(y);
+//        System.out.println(z);
+//
+//        System.out.println(latitude);
+//        System.out.println(longitude);
+//        System.out.println(radius);
+
+
+        assertTrue(Math.abs(0.5 - x) < EPSILON);
+        assertTrue(Math.abs(0.5 - y) < EPSILON);
+        assertTrue(Math.abs(0.5 - z) < EPSILON);
+    }
+
+    @Test
     public void getDistanceTest() {
 
-        Coordinate test = new Coordinate ( MAX , MAX, MAX);
-        Coordinate test2 = new Coordinate();
+        CartesianCoordinate test = new CartesianCoordinate ( MAX , MAX, MAX);
+        CartesianCoordinate test2 = new CartesianCoordinate();
 
         try {
             Double.isInfinite(test.getDistance(test2));
         } catch (IllegalStateException e) {
         }
 
-        one = new Coordinate();
-        two = new Coordinate();
+        one = new CartesianCoordinate();
+        two = new CartesianCoordinate();
         assert(one.getDistance(two) == two.getDistance(one) && one.getDistance(two) == 0.0);
 
-        one = new Coordinate(1, 2, 3);
-        two = new Coordinate(1, 2, 3);
+        one = new CartesianCoordinate(1, 2, 3);
+        two = new CartesianCoordinate(1, 2, 3);
         assert(one.getDistance(two) == two.getDistance(one));
     }
 
     @Test
     public void isEqualTest() {
 
-        one = new Coordinate();
-        two = new Coordinate();
+        one = new CartesianCoordinate();
+        two = new CartesianCoordinate();
         assert(one.isEqual(two));
         assert(two.isEqual(one));
         assert(one.isEqual(one));
         assert(two.isEqual(two));
 
-        one = new Coordinate(3, 2, 1);
-        two = new Coordinate( 3, 2, 1);
+        one = new CartesianCoordinate(3, 2, 1);
+        two = new CartesianCoordinate( 3, 2, 1);
         assert(one.isEqual(two));
         assert(two.isEqual(one));
         assert(one.isEqual(one));
         assert(two.isEqual(two));
 
-        three = new Coordinate(1, 2, 3);
-        four = new Coordinate(-1, -2, -3);
+        three = new CartesianCoordinate(1, 2, 3);
+        four = new CartesianCoordinate(-1, -2, -3);
         assertFalse(three.isEqual(four));
         assertFalse(four.isEqual(three));
         assert(three.isEqual(three));
@@ -165,8 +173,8 @@ public class CoordinateTest {
 
     @Test
     public void equalsTest() {
-        one = new Coordinate();
-        two = new Coordinate();
+        one = new CartesianCoordinate();
+        two = new CartesianCoordinate();
 
 
         assert(one.equals(two));
@@ -174,16 +182,16 @@ public class CoordinateTest {
         assert(one.equals(one));
         assert(two.equals(two));;
 
-        one = new Coordinate(3, 2, 1);
-        two = new Coordinate( 3, 2, 1);
+        one = new CartesianCoordinate(3, 2, 1);
+        two = new CartesianCoordinate( 3, 2, 1);
 
         assert(one.equals(two));
         assert(two.equals(one));
         assert(one.equals(one));
         assert(two.equals(two));
 
-        three = new Coordinate(1, 2, 3);
-        four = new Coordinate(-1, -2, -3);
+        three = new CartesianCoordinate(1, 2, 3);
+        four = new CartesianCoordinate(-1, -2, -3);
         assertFalse(three.equals(four));
         assertFalse(four.equals(three));
         assert(three.equals(three));
@@ -197,7 +205,7 @@ public class CoordinateTest {
     }
     @Test
     public void squareTest() {
-        one = new Coordinate();
+        one = new CartesianCoordinate();
 
 
         assert(one.square(2) == 4);
@@ -215,16 +223,16 @@ public class CoordinateTest {
     @Test
     public void toStringTest() {
 
-        one = new Coordinate();
+        one = new CartesianCoordinate();
         Assert.assertTrue(one.toString().compareTo("random text") < 0);
-        Assert.assertTrue((one.toString()).compareTo("Coordinate: x=0.0 y=0.0 z=0.0") == 0);
+        Assert.assertTrue((one.toString()).compareTo("Coordinate: {x=0.0 y=0.0 z=0.0 }") == 0);
         Assert.assertFalse(one.toString().compareTo("random text") == 0);
-        Assert.assertFalse(one.toString().compareTo("Coordinate: x=0.0 y=0.0 z=0.0") < 0);
+        Assert.assertFalse(one.toString().compareTo("Coordinate: {x=0.0 y=0.0 z=0.0 }") < 0);
 
-        two = new Coordinate(1.0E-15, 1.0E-15,1.0E-15);
+        two = new CartesianCoordinate(1.0E-15, 1.0E-15,1.0E-15);
         Assert.assertTrue(two.toString().compareTo("random text") < 0);
-        Assert.assertTrue((two.toString()).compareTo("Coordinate: x=1.0E-15 y=1.0E-15 z=1.0E-15") == 0);
+        Assert.assertTrue((two.toString()).compareTo("Coordinate: {x=1.0E-15 y=1.0E-15 z=1.0E-15 }") == 0);
         Assert.assertFalse(two.toString().compareTo("random text") == 0);
-        Assert.assertFalse(two.toString().compareTo("Coordinate: x=1.0E-15 y=1.0E-15 z=1.0E-15") < 0);
+        Assert.assertFalse(two.toString().compareTo("Coordinate: {x=1.0E-15 y=1.0E-15 z=1.0E-15 }") < 0);
     }
 }
