@@ -48,7 +48,20 @@ public class LeninPhotoFactoryTest {
     public void createPhotosTest() {
         factory = new LeninPhotoFactory();
         Photo photo = factory.createPhoto();
+        LeninPhoto lenPhoto = factory.createPhoto();
 
+        assertTrue(lenPhoto instanceof LeninPhoto);
         assertTrue(photo instanceof LeninPhoto);
+    }
+
+    @Test
+    public void createPhotoAndGetLocationTest(){
+        factory = new LeninPhotoFactory();
+        LeninPhoto lenPhoto = factory.createPhoto();
+        lenPhoto.setLocation(new Location());
+        Location loc = new Location();
+        //ofc location is different here, but coordinates are the same
+        assertEquals(lenPhoto.getLocation().getCoordinate(), loc.getCoordinate());
+
     }
 }
