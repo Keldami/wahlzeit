@@ -10,7 +10,6 @@ import org.junit.runners.Suite;
         //persistence
         //AbstractAdapterTest.class, --abstract class not to test directly
         DatastoreAdapterTest.class,
-        GcsAdapterTest.class,
 
 
 
