@@ -35,6 +35,7 @@ public class LocationTest {
         loc4 = new Location();
         loc5 = new Location(new CartesianCoordinate());
         loc6 = new Location(new CartesianCoordinate(1, 2, 3));
+        System.out.println(loc5.getCoordinate());
 
 
     }

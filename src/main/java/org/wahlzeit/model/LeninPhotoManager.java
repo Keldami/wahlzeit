@@ -4,7 +4,7 @@ import com.googlecode.objectify.annotation.Subclass;
 
 import java.util.logging.Logger;
 
-@Subclass
+//@Subclass
 public class LeninPhotoManager extends PhotoManager {
 
     protected static LeninPhotoManager instance = new LeninPhotoManager();
@@ -12,12 +12,7 @@ public class LeninPhotoManager extends PhotoManager {
     private static final Logger log = Logger.getLogger(LeninPhotoManager.class.getName());
 
 
-    public LeninPhotoManager() {
-        super();
-    }
-
-
-   public static LeninPhotoManager getInstance() {
+    public static LeninPhotoManager getInstance() {
         return instance;
     }
 

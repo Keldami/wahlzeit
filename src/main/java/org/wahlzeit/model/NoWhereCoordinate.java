@@ -1,6 +1,8 @@
 package org.wahlzeit.model;
 
 
+import com.googlecode.objectify.annotation.Subclass;
+
 // null coordinate for location
 public class NoWhereCoordinate implements Coordinate{
 

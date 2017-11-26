@@ -135,7 +135,7 @@ public class Photo extends DataObject {
 	 * location of the photo
 	 * initializes location at Coordinates x=0.0 y=0.0 z=0.0
 	 */
-	Location location = new Location();
+	Location location;
 
 	/**
 	 *

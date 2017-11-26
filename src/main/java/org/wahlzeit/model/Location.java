@@ -1,9 +1,12 @@
 package org.wahlzeit.model;
 
 
+/*
+* You have to first set Location in Photo.class to use it and get a Coordinate
+*/
 public class Location {
 
-    private Coordinate coordinate = new NoWhereCoordinate();
+    private Coordinate coordinate;
 
     /*
      *  @methodtype constructor

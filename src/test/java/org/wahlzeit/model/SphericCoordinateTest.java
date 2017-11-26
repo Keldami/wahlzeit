@@ -119,6 +119,17 @@ public class SphericCoordinateTest {
         one = new SphericCoordinate(1, 2, 3);
         two = new SphericCoordinate(1, 2, 3);
         assert(one.getDistance(two) == two.getDistance(one));
+
+        one = new SphericCoordinate(45.0, 30.0, 1.5);
+        two = new SphericCoordinate(45.0, 30.0, 1.5);
+        three = new SphericCoordinate();
+        four = new SphericCoordinate(20.0, 20.0, 0.0);
+
+
+        //TODO further enhance getDistanceTest
+        assertFalse(one.asCartesianCoordinate().getCartesianDistance(four) ==
+                    one.asSphericCoordinate().getSphericDistance(four));
+
     }
 
     @Test
