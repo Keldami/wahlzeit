@@ -4,24 +4,25 @@ package org.wahlzeit.model;
 /**
  * A generic implementation of a Coordinate
  */
-public class AbstractCoordinate implements Coordinate{
+public abstract class AbstractCoordinate implements Coordinate{
+
     public AbstractCoordinate() {
     }
 
     @Override
-    public boolean isEqual(Coordinate other) {
-        return false;
-    }
+    public abstract boolean isEqual(Coordinate other);
 
     @Override
-    public CartesianCoordinate asCartesianCoordinate() {
-        return null;
-    }
+    public abstract CartesianCoordinate asCartesianCoordinate();
 
     @Override
-    public double getCartesianDistance(Coordinate other) {
-        return 0;
-    }
+    public abstract double getCartesianDistance(Coordinate other);
+
+    @Override
+    public abstract double getSphericDistance(Coordinate other);
+
+    @Override
+    public abstract SphericCoordinate asSphericCoordinate();
 
     /*
     * Get's the distance to another coordinate from the current locations coordinate
@@ -42,16 +43,6 @@ public class AbstractCoordinate implements Coordinate{
             return Double.NaN;
 
         }
-    }
-
-    @Override
-    public double getSphericDistance(Coordinate other) {
-        return 0;
-    }
-
-    @Override
-    public SphericCoordinate asSphericCoordinate() {
-        return null;
     }
 
 }
