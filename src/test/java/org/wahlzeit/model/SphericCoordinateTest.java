@@ -104,7 +104,7 @@ public class SphericCoordinateTest {
     @Test
     public void getDistanceTest() {
 
-        SphericCoordinate test = new SphericCoordinate ( MAX , MAX, MAX);
+        SphericCoordinate test = new SphericCoordinate ( 0 , 0, MAX);
         SphericCoordinate test2 = new SphericCoordinate();
 
         try {
@@ -150,7 +150,7 @@ public class SphericCoordinateTest {
         assert(two.isEqual(two));
 
         three = new SphericCoordinate(1, 2, 3);
-        four = new SphericCoordinate(-1, -2, -3);
+        four = new SphericCoordinate(0, 0, 0);
         assertFalse(three.isEqual(four));
         assertFalse(four.isEqual(three));
         assert(three.isEqual(three));
@@ -177,7 +177,7 @@ public class SphericCoordinateTest {
         assert(two.equals(two));
 
         three = new SphericCoordinate(1, 2, 3);
-        four = new SphericCoordinate(-1, -2, -3);
+        four = new SphericCoordinate(0, 0, 0);
         assertFalse(three.equals(four));
         assertFalse(four.equals(three));
         assert(three.equals(three));

@@ -1,6 +1,7 @@
 package org.wahlzeit.model;
 
 import com.googlecode.objectify.annotation.Subclass;
+import org.wahlzeit.utils.CoordinateUtil;
 
 @Subclass
 public class SphericCoordinate extends AbstractCoordinate {
@@ -11,14 +12,12 @@ public class SphericCoordinate extends AbstractCoordinate {
     private double radius;
 
     public SphericCoordinate(double latitude, double longitude, double radius){
-        super();
         this.setLatitude(latitude);
         this.setLongitude(longitude);
         this.setRadius(radius);
     }
 
     public SphericCoordinate() {
-        super();
         this.setLatitude(0);
         this.setLongitude(0);
         this.setRadius(0);
@@ -37,28 +36,19 @@ public class SphericCoordinate extends AbstractCoordinate {
     }
 
 
-    //TODO setter latitude and longitude are degrees, radius should not be less than 0
     public void setLatitude(double latitude){
-        if(Double.isNaN(latitude) || Double.isInfinite(latitude)){
-            throw new IllegalArgumentException("Please set a value for latitude not Double.NaN or Double.INFINITY");
-        }
+        CoordinateUtil.assertSphericParameter(latitude, 180, 0, "latitude");
         this.latitude = latitude;
-
-
     }
 
     public void setLongitude(double longitude) {
-        if(Double.isNaN(longitude) || Double.isInfinite(longitude)){
-            throw new IllegalArgumentException("Please set a value for longitude not Double.NaN or Double.INFINITY");
-        }
+        CoordinateUtil.assertSphericParameter(longitude, 180, -180, "longitude");
         this.longitude = longitude;
 
     }
 
     public void setRadius(double radius) {
-        if(Double.isNaN(radius) || Double.isInfinite(radius)){
-            throw new IllegalArgumentException("Please set a value for radius not Double.NaN or Double.INFINITY");
-        }
+        CoordinateUtil.assertSphericParameter(radius, Double.POSITIVE_INFINITY, 0, "radius");
         this.radius = radius;
 
     }
@@ -68,6 +58,11 @@ public class SphericCoordinate extends AbstractCoordinate {
     // ( arccos(sin(latitude(a)) * sin(latitude(b) + cos(latitude(a)) * cos (latitude(b)) * cos(longitude(a) -longitude(b)) ) * radius
     @Override
     public double getSphericDistance(Coordinate other) {
+
+        CoordinateUtil.assertAllSphericParameters(
+                other.asSphericCoordinate().getLatitude(),
+                other.asSphericCoordinate().getLongitude(),
+                other.asSphericCoordinate().getRadius());
 
         double distance;
         double sinlata = Math.toRadians(Math.sin(this.getLatitude()));
@@ -80,7 +75,6 @@ public class SphericCoordinate extends AbstractCoordinate {
         return distance;
     }
 
-    //TODO
     @Override
     public double getCartesianDistance(Coordinate other) {
         return this.asCartesianCoordinate().getCartesianDistance(other.asCartesianCoordinate());
@@ -103,6 +97,8 @@ public class SphericCoordinate extends AbstractCoordinate {
 
         double z = -this.getRadius() * Math.cos(Math.toRadians(this.getLatitude()))
                 * Math.cos(Math.toRadians(this.getLongitude()));
+
+        CoordinateUtil.assertAllCartesianParameters(x, y, z);
 
         asCartesian.setX(x);
         asCartesian.setY(y);
@@ -163,25 +159,4 @@ public class SphericCoordinate extends AbstractCoordinate {
                 this.getLongitude() + " radius=" + this.getRadius() + " }";
     }
 
-
-    //to update cartesian coordinates
-//    x = radius * cos(latitude) * sin(longitude)
-//    y = radius * sin(latitude)
-//    z = -radius * cos(latitude) * cos(longitude)
-//    private void updateCartesianCoordinate(CartesianCoordinate asCartesian) {
-//        if(asCartesian != null) {
-//
-//            double x = this.getRadius() * Math.cos(Math.toRadians(this.getLatitude()))
-//                    * Math.sin(Math.toRadians(this.getLongitude()));
-//
-//            double y = this.getRadius() * Math.sin(Math.toRadians(this.getLatitude()));
-//
-//            double z = -this.getRadius() * Math.cos(Math.toRadians(this.getLatitude()))
-//                    * Math.cos(Math.toRadians(this.getLongitude()));
-//
-//            asCartesian.setX(x);
-//            asCartesian.setY(y);
-//            asCartesian.setZ(z);
-//        }
-//    }
 }

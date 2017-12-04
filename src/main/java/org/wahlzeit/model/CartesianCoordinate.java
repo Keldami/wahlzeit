@@ -1,6 +1,8 @@
 package org.wahlzeit.model;
 
 
+import org.wahlzeit.utils.CoordinateUtil;
+
 import java.lang.Math;
 /*
  * Coordinate gets cartesian coordinates of a picture
@@ -16,7 +18,6 @@ public class CartesianCoordinate extends AbstractCoordinate{
      *  @methodtype constructor
      */
     public CartesianCoordinate(double x, double y, double z) {
-        super();
         this.setX(x);
         this.setY(y);
         this.setZ(z);
@@ -26,7 +27,6 @@ public class CartesianCoordinate extends AbstractCoordinate{
      *  @methodtype constructor
      */
     public CartesianCoordinate() {
-        super();
         this.setX(0);
         this.setY(0);
         this.setZ(0);
@@ -57,9 +57,7 @@ public class CartesianCoordinate extends AbstractCoordinate{
      *  @methodtype set
      */
     public void setX(double x) {
-        if(Double.isNaN(x) || Double.isInfinite(x)){
-            throw new IllegalArgumentException("The double value for x is too big");
-        }
+        CoordinateUtil.assertCartesianParameter(x, "x");
         this.x = x;
 
     }
@@ -68,9 +66,7 @@ public class CartesianCoordinate extends AbstractCoordinate{
      *  @methodtype set
      */
     public void setY(double y) {
-        if(Double.isNaN(y) || Double.isInfinite(y)){
-            throw new IllegalArgumentException("The double value for y is too big");
-        }
+        CoordinateUtil.assertCartesianParameter(y, "y");
         this.y = y;
 
     }
@@ -79,9 +75,7 @@ public class CartesianCoordinate extends AbstractCoordinate{
      *  @methodtype set
      */
     public void setZ(double z) {
-        if(Double.isNaN(z) || Double.isInfinite(z)){
-            throw new IllegalArgumentException("The double value for z is too big");
-        }
+        CoordinateUtil.assertCartesianParameter(z, "z");
         this.z = z;
     }
 
@@ -100,6 +94,11 @@ public class CartesianCoordinate extends AbstractCoordinate{
 
     @Override
     public double getCartesianDistance(Coordinate other) {
+
+        CoordinateUtil.assertAllCartesianParameters(
+                other.asCartesianCoordinate().getX(),
+                other.asCartesianCoordinate().getY(),
+                other.asCartesianCoordinate().getZ());
 
         double diffx = this.asCartesianCoordinate().getX() - other.asCartesianCoordinate().getX();
         double diffy = this.asCartesianCoordinate().getY() - other.asCartesianCoordinate().getY();
@@ -136,6 +135,8 @@ public class CartesianCoordinate extends AbstractCoordinate{
         double radius = Math.sqrt(square(this.getX()) + square(this.getY()) + square(this.getZ()));
         double latitude = Math.toDegrees(Math.asin(this.getY() / radius));
         double longitude = Math.toDegrees(Math.atan2(this.getX(), -this.getZ()));
+
+        CoordinateUtil.assertAllSphericParameters(latitude, longitude, radius);
 
         asSpheric.setLatitude(latitude);
         asSpheric.setLongitude(longitude);
@@ -214,19 +215,4 @@ public class CartesianCoordinate extends AbstractCoordinate{
     }
 
 
-    //to update spheric coordinate object
-//    radius = sqrt(x^2 + y^2 + z^2)
-//    latitude = arcsin(y/radius)
-//    longitude = atan2(x, -z)
-//    private void updateSphericCoordinate(SphericCoordinate asSpheric) {
-//        if(asSpheric != null) {
-//            double radius = Math.sqrt(square(this.getX()) + square(this.getY()) + square(this.getZ()));
-//            double latitude = Math.toDegrees(Math.asin(this.getY() / radius));
-//            double longitude = Math.toDegrees(Math.atan2(this.getX(), -this.getZ()));
-//
-//            asSpheric.setLatitude(latitude);
-//            asSpheric.setLongitude(longitude);
-//            asSpheric.setRadius(radius);
-//        }
-//    }
 }
