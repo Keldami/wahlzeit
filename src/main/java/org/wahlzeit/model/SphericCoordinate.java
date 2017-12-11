@@ -1,3 +1,23 @@
+/*
+ * Copyright (c) 2017-2018 by Artur Wasinger
+ *
+ * This file is part of the Wahlzeit photo rating application.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public
+ * License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>.
+ */
+
 package org.wahlzeit.model;
 
 import com.googlecode.objectify.annotation.Subclass;
@@ -59,18 +79,29 @@ public class SphericCoordinate extends AbstractCoordinate {
     @Override
     public double getSphericDistance(Coordinate other) {
 
+        //could works without start, but it's a safer implementation(?)
+        SphericCoordinate start = this.asSphericCoordinate();
+        SphericCoordinate end = other.asSphericCoordinate();
+
         CoordinateUtil.assertAllSphericParameters(
-                other.asSphericCoordinate().getLatitude(),
-                other.asSphericCoordinate().getLongitude(),
-                other.asSphericCoordinate().getRadius());
+                start.getLatitude(),
+                start.getLongitude(),
+                start.getRadius());
+
+        CoordinateUtil.assertAllSphericParameters(
+                end.getLatitude(),
+                end.getLongitude(),
+                end.getRadius());
 
         double distance;
-        double sinlata = Math.toRadians(Math.sin(this.getLatitude()));
-        double sinlatb = Math.toRadians(Math.sin(other.asSphericCoordinate().getLatitude()));
-        double coslata = Math.toRadians(Math.cos(this.getLatitude()));
-        double coslatb = Math.toRadians(Math.cos(other.asSphericCoordinate().getLatitude()));
-        double coslongalongb = Math.toRadians(Math.cos(this.getLongitude()) - Math.cos(other.asSphericCoordinate().getLongitude()));
+        double sinlata = Math.toRadians(Math.sin(start.getLatitude()));
+        double sinlatb = Math.toRadians(Math.sin(end.getLatitude()));
+        double coslata = Math.toRadians(Math.cos(start.getLatitude()));
+        double coslatb = Math.toRadians(Math.cos(end.getLatitude()));
+        double coslongalongb = Math.toRadians(Math.cos(start.getLongitude()) - Math.cos(end.getLongitude()));
         distance = radius * Math.acos(sinlata * sinlatb + coslata * coslatb * coslongalongb);
+
+        CoordinateUtil.assertDistance(distance, "spheric distance");
 
         return distance;
     }
@@ -82,9 +113,9 @@ public class SphericCoordinate extends AbstractCoordinate {
 
 
     //to update cartesian coordinates
-//    x = radius * cos(latitude) * sin(longitude)
-//    y = radius * sin(latitude)
-//    z = -radius * cos(latitude) * cos(longitude)
+    //    x = radius * cos(latitude) * sin(longitude)
+    //    y = radius * sin(latitude)
+    //    z = -radius * cos(latitude) * cos(longitude)
     @Override
     public CartesianCoordinate asCartesianCoordinate() {
 
@@ -103,7 +134,6 @@ public class SphericCoordinate extends AbstractCoordinate {
         asCartesian.setX(x);
         asCartesian.setY(y);
         asCartesian.setZ(z);
-
 
         return asCartesian;
     }
@@ -130,9 +160,12 @@ public class SphericCoordinate extends AbstractCoordinate {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
+
+        if (this == obj)
             return true;
-        }
+
+        if (obj == null)
+            return false;
 
         if (obj instanceof SphericCoordinate && this.isEqual( (Coordinate) obj )){
             return true;

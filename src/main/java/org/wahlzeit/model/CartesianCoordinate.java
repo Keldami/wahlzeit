@@ -1,3 +1,23 @@
+/*
+ * Copyright (c) 2017-2018 by Artur Wasinger
+ *
+ * This file is part of the Wahlzeit photo rating application.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public
+ * License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>.
+ */
+
 package org.wahlzeit.model;
 
 
@@ -59,7 +79,6 @@ public class CartesianCoordinate extends AbstractCoordinate{
     public void setX(double x) {
         CoordinateUtil.assertCartesianParameter(x, "x");
         this.x = x;
-
     }
 
     /*
@@ -68,7 +87,6 @@ public class CartesianCoordinate extends AbstractCoordinate{
     public void setY(double y) {
         CoordinateUtil.assertCartesianParameter(y, "y");
         this.y = y;
-
     }
 
     /*
@@ -95,22 +113,30 @@ public class CartesianCoordinate extends AbstractCoordinate{
     @Override
     public double getCartesianDistance(Coordinate other) {
 
+        //should work without start (as this.asCartesianCoordinate)
+        CartesianCoordinate start = this.asCartesianCoordinate();
+        CartesianCoordinate end = other.asCartesianCoordinate();
+
         CoordinateUtil.assertAllCartesianParameters(
-                other.asCartesianCoordinate().getX(),
-                other.asCartesianCoordinate().getY(),
-                other.asCartesianCoordinate().getZ());
+                end.getX(),
+                end.getY(),
+                end.getZ());
 
-        double diffx = this.asCartesianCoordinate().getX() - other.asCartesianCoordinate().getX();
-        double diffy = this.asCartesianCoordinate().getY() - other.asCartesianCoordinate().getY();
-        double diffz = this.asCartesianCoordinate().getZ() - other.asCartesianCoordinate().getZ();
+        CoordinateUtil.assertAllCartesianParameters(
+                start.getX(),
+                start.getY(),
+                start.getZ());
 
-        double ret = Math.sqrt(this.asCartesianCoordinate().square(diffx) +
-                               this.asCartesianCoordinate().square(diffy) +
-                               this.asCartesianCoordinate().square(diffz));
+        double diffx = start.getX() - end.getX();
+        double diffy = start.getY() - end.getY();
+        double diffz = start.getZ() - end.getZ();
 
-        if (Double.isInfinite(ret)) {
-            throw new IllegalStateException("The distance is infinity. Illegal state.");
-        }
+        //could take square()-implementation form library but it doesn't have an exception
+        double ret = Math.sqrt(
+                start.square(diffx) + start.square(diffy) + start.square(diffz));
+
+        CoordinateUtil.assertDistance(ret, "cartesian distance");
+
         return ret;
     }
 
@@ -119,7 +145,6 @@ public class CartesianCoordinate extends AbstractCoordinate{
     public double getSphericDistance(Coordinate other) {
         return this.asSphericCoordinate().getSphericDistance(other.asSphericCoordinate());
     }
-
 
     //@methodtype interpreter
     //returns either a new SphericCoordinate or creates a specific for this CartesianCoordinate
@@ -142,7 +167,6 @@ public class CartesianCoordinate extends AbstractCoordinate{
         asSpheric.setLongitude(longitude);
         asSpheric.setRadius(radius);
 
-
         return asSpheric;
     }
 
@@ -150,8 +174,6 @@ public class CartesianCoordinate extends AbstractCoordinate{
     public CartesianCoordinate asCartesianCoordinate() {
         return this;
     }
-
-
 
     /*
     * compares to a coordinate
@@ -177,9 +199,11 @@ public class CartesianCoordinate extends AbstractCoordinate{
     @Override
     public boolean equals(Object obj) {
 
-        if (this == obj) {
+        if (this == obj)
             return true;
-        }
+
+        if (obj == null)
+            return false;
 
         if (obj instanceof CartesianCoordinate && this.isEqual( (Coordinate) obj )){
             return true;
@@ -197,6 +221,7 @@ public class CartesianCoordinate extends AbstractCoordinate{
 
         return ret;
     }
+
 
     protected double square(double val) {
 

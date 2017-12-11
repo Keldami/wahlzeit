@@ -1,3 +1,23 @@
+/*
+ * Copyright (c) 2017-2018 by Artur Wasinger
+ *
+ * This file is part of the Wahlzeit photo rating application.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public
+ * License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>.
+ */
+
 package org.wahlzeit.utils;
 
 public class CoordinateUtil {
@@ -47,16 +67,38 @@ public class CoordinateUtil {
 
     //note that assert is for degrees (you set values in degrees), calculated in radians
     public static void assertAllSphericParameters(double latitude, double longitude, double radius){
+
         assertSphericParameter(latitude, 180, 0.0, "latitude");
         assertSphericParameter(longitude, 180, -180, "longitude");
         assertSphericParameter(radius, Double.POSITIVE_INFINITY, 0, "radius");
+
     }
 
     public static <T> void isNotNull(T object, String parameterName){
+
         if (object == null) {
             throw new IllegalArgumentException("IllegalArgumentException: " + parameterName + " is NULL.");
         }
+
     }
 
+    public static void assertDistance(double distance, String parameterName) {
+
+        isNotNull(distance, parameterName);
+
+        if(Double.isNaN(distance)) {
+            throw new IllegalArgumentException("IllegalArgumentException: Double is NaN for " + parameterName);
+        }
+
+        if( Double.isInfinite(distance) ) {
+            throw new IllegalStateException("IllegalStateException: " + parameterName + " is INFINITE.");
+        }
+
+        if (distance < 0 ) {
+            throw new IllegalStateException("IllegalStateException: " + parameterName + " is NEGATIVE.");
+        }
+
+
+    }
 
 }
