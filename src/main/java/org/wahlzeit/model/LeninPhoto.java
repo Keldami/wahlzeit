@@ -24,6 +24,12 @@ package org.wahlzeit.model;
 import com.googlecode.objectify.annotation.Subclass;
 
 
+/**
+ * specific implementation of photo class
+ * @see {@link LeninPhotoFactory}
+ * @see {@link LeninPhotoManager}
+ * @see {@link Photo}
+ */
 @Subclass
 public class LeninPhoto extends Photo {
 

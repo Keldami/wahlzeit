@@ -26,6 +26,12 @@ import org.wahlzeit.services.LogBuilder;
 import java.util.logging.Logger;
 
 
+/**
+ * factory for leninPhotos
+ * @see {@link LeninPhoto}
+ * @see {@link LeninPhotoManager}
+ * @see {@link PhotoFactory}
+ */
 public class LeninPhotoFactory extends PhotoFactory {
 
     private static final Logger log = Logger.getLogger(LeninPhotoFactory.class.getName());

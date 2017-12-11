@@ -24,8 +24,9 @@ package org.wahlzeit.model;
 import org.wahlzeit.utils.CoordinateUtil;
 
 import java.lang.Math;
-/*
- * Coordinate gets cartesian coordinates of a picture
+
+/**
+ * Cartesian coordinate implementation
  */
 public class CartesianCoordinate extends AbstractCoordinate{
 
@@ -106,8 +107,10 @@ public class CartesianCoordinate extends AbstractCoordinate{
         setZ(z);
     }
 
-    // we have asCartesianCoordinate for this but still :)
-    // @methodtype get
+    /**
+     * we have asCartesianCoordinate for this but still :)
+     * @return this instance
+     */
     public CartesianCoordinate getCartesianCoordinate() { return this; }
 
     @Override
@@ -140,18 +143,22 @@ public class CartesianCoordinate extends AbstractCoordinate{
         return ret;
     }
 
-    //https://en.wikipedia.org/wiki/Great-circle_distance#Computational_formulas
     @Override
     public double getSphericDistance(Coordinate other) {
         return this.asSphericCoordinate().getSphericDistance(other.asSphericCoordinate());
     }
 
-    //@methodtype interpreter
-    //returns either a new SphericCoordinate or creates a specific for this CartesianCoordinate
-    //    to update spheric coordinate object
-    //    radius = sqrt(x^2 + y^2 + z^2)
-    //    latitude = arcsin(y/radius)
-    //    longitude = atan2(x, -z)
+    /**
+     * @methodtype interpreter
+     * returns a new SphericCoordinate
+     * to update spheric coordinate object
+     * radius = sqrt(x^2 + y^2 + z^2)
+     * latitude = arcsin(y/radius)
+     * longitude = atan2(x, -z)
+     * @see CartesianCoordinate#asCartesianCoordinate()
+     * @see SphericCoordinate#asCartesianCoordinate()
+     * @return instance of SphericCoordinate
+     */
     @Override
     public SphericCoordinate asSphericCoordinate() {
 
@@ -223,6 +230,12 @@ public class CartesianCoordinate extends AbstractCoordinate{
     }
 
 
+    /**
+     * returns square value for val
+     * gives an unchecked exception if there is an overflow
+     * @param val
+     * @return val * val
+     */
     protected double square(double val) {
 
         double ret = Math.pow(val, 2);
@@ -232,8 +245,9 @@ public class CartesianCoordinate extends AbstractCoordinate{
         return ret;
     }
 
-    /*
-     * Current Coordinate to String
+    /**
+     * returns current coordinate to string
+     * @return string
      */
     public String toString() {
         return "Coordinate: {x=" + x + " y=" + y + " z=" + z + " }";

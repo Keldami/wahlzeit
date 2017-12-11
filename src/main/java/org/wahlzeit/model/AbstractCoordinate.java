@@ -44,10 +44,6 @@ public abstract class AbstractCoordinate implements Coordinate{
     @Override
     public abstract SphericCoordinate asSphericCoordinate();
 
-    /*
-    * Get's the distance to another coordinate from the current locations coordinate
-    * @methodtype get
-    */
     public double getDistance(Coordinate other) {
 
         if(other instanceof CartesianCoordinate){

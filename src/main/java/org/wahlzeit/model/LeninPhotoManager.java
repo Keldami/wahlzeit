@@ -24,6 +24,12 @@ package org.wahlzeit.model;
 import java.util.logging.Logger;
 
 
+/**
+ * Manager class for LeninPhotos
+ * @see {@link LeninPhoto}
+ * @see {@link LeninPhotoFactory}
+ * @see {@link PhotoManager}
+ */
 public class LeninPhotoManager extends PhotoManager {
 
     protected static LeninPhotoManager instance = new LeninPhotoManager();

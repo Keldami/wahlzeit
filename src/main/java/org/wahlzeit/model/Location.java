@@ -1,9 +1,11 @@
 package org.wahlzeit.model;
 
 
-/*
-* You have to first set Location in Photo.class to use it and get a Coordinate
-*/
+/**
+ * Location class for Photo class
+ * needs @see {@link Coordinate} to work properly
+ * You have to first set Location in Photo.class to use it and get a Coordinate
+ */
 public class Location {
 
     private Coordinate coordinate;
@@ -26,8 +28,9 @@ public class Location {
         setCoordinate(new CartesianCoordinate());
     }
 
-    /*
-     *  @methodtype set
+    /**
+     * Sets a Coordinate
+     * @param other
      */
     public void setCoordinate(Coordinate other) {
         if (other == null) {
@@ -43,8 +46,13 @@ public class Location {
         return coordinate;
     }
 
-    /*
-     *  @methodtype get
+    /**
+     * Calculates the distance between two coordinates
+     * Gives different types of distances for different types of coordinates
+     * @see {@link SphericCoordinate#getSphericDistance(Coordinate)}
+     * @see {@link CartesianCoordinate#getCartesianDistance(Coordinate)}
+     * @param other
+     * @return
      */
     public double getDistance(Coordinate other) {
         if (other == null) {

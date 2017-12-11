@@ -23,6 +23,9 @@ package org.wahlzeit.model;
 import com.googlecode.objectify.annotation.Subclass;
 import org.wahlzeit.utils.CoordinateUtil;
 
+/**
+ * Spheric coordinate class implementation
+ */
 @Subclass
 public class SphericCoordinate extends AbstractCoordinate {
 
@@ -112,10 +115,18 @@ public class SphericCoordinate extends AbstractCoordinate {
     }
 
 
-    //to update cartesian coordinates
-    //    x = radius * cos(latitude) * sin(longitude)
-    //    y = radius * sin(latitude)
-    //    z = -radius * cos(latitude) * cos(longitude)
+
+    /**
+     * @methodtype interpreter
+     * returnsa new CartesianCoordinate
+     * to update cartesian coordinates
+     *     x = radius * cos(latitude) * sin(longitude)
+     *     y = radius * sin(latitude)
+     *     z = -radius * cos(latitude) * cos(longitude)
+     * @see CartesianCoordinate#asCartesianCoordinate()
+     * @see SphericCoordinate#asCartesianCoordinate()
+     * @return instance of CartesianCoordinate
+     */
     @Override
     public CartesianCoordinate asCartesianCoordinate() {
 
@@ -184,9 +195,10 @@ public class SphericCoordinate extends AbstractCoordinate {
     }
 
 
-    /*
-    * Current Coordinate to String
-    */
+    /**
+     * returns current coordinate to string
+     * @return string
+     */
     public String toString() {
         return "SphericCoordinate: {latitude=" + this.getLatitude() + " longitude=" +
                 this.getLongitude() + " radius=" + this.getRadius() + " }";

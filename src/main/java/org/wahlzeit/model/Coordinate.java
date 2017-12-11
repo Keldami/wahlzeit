@@ -21,32 +21,61 @@
 package org.wahlzeit.model;
 
 
-/*
+/**
  * Interface for generic Coordinate classes
  */
 public interface Coordinate {
 
-    /*
-     *
-     *
+
+    /**
+     * converts the current instance to {@link CartesianCoordinate}
+     * @see #asSphericCoordinate()
+     * @return instance of CarteisanCoordinate
      */
-    // @methodtype interpreter method for CartesianCoordinates
     CartesianCoordinate asCartesianCoordinate();
 
+
+    /**
+     * Converts current instance and other to {@link CartesianCoordinate}
+     * Calculates and returns their euclidean distance
+     * @param other
+     * @return distance as double
+     */
     double getCartesianDistance(Coordinate other);
 
-
-    // @methodtype interpreter method for SphericCoordinates
+    /**
+     * converts the current instance to {@link SphericCoordinate}
+     * @see #asCartesianCoordinate()
+     *
+     * @return instance of SphericCoordinate
+     */
     SphericCoordinate asSphericCoordinate();
 
+    /**
+     * Converts current instance and other to {@link SphericCoordinate}
+     * Calculates and returns their spheric distance
+     * @see <a hfref="https://en.wikipedia.org/wiki/Great-circle_distance#Computational_formulas" a>
+     *     https://en.wikipedia.org/wiki/Great-circle_distance#Computational_formulas
+     *     </a>
+     * @param other
+     * @return distance as double
+     */
     double getSphericDistance(Coordinate other);
 
-
-    //get's the distance to another coordinate
+    /**
+     * Calculates the distance of given Coordinate-Type
+     * Get's the distance to another coordinate from the current locations coordinate
+     * @see #getSphericDistance(Coordinate)
+     * @see #getCartesianDistance(Coordinate)
+     * @param other
+     * @return distance as double
+     */
     double getDistance(Coordinate other);
 
-    //returns true if location and type is equal to other
-    //else returns false
+    /**
+     * @param other
+     * @return returns true if location and type is equal to other else returns false
+     */
     boolean isEqual(Coordinate other);
 
 }

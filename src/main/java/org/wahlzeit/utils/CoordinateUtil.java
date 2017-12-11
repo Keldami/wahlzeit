@@ -20,9 +20,19 @@
 
 package org.wahlzeit.utils;
 
+/**
+ * Helper class
+ * Gives assertions for Coordinate-Classes
+ * @see {@link org.wahlzeit.model.Coordinate}
+ */
 public class CoordinateUtil {
 
 
+    /**
+     * Asserts the Cartesian-Parameters
+     * @param val
+     * @param parameterName
+     */
     public static void assertCartesianParameter(double val, String parameterName) {
 
         isNotNull(val, parameterName);
@@ -36,6 +46,13 @@ public class CoordinateUtil {
     }
 
 
+    /**
+     * Asserts Spheric parameters
+     * @param val
+     * @param upperRange
+     * @param lowerRange
+     * @param parameterName
+     */
     public static void assertSphericParameter(double val, double upperRange, double lowerRange, String parameterName) {
 
         isNotNull(val, parameterName);
@@ -58,14 +75,28 @@ public class CoordinateUtil {
     }
 
 
-    //Default Names are x, y, z for CartesianCoordinates
+    /**
+     * Asserts all cartesian coordinate parameters
+     * Default Names are x, y, z for CartesianCoordinates
+     * @see {@link org.wahlzeit.model.CartesianCoordinate}
+     * @param x
+     * @param y
+     * @param z
+     */
     public static void assertAllCartesianParameters(double x, double y, double z){
         assertCartesianParameter(x, "x");
         assertCartesianParameter(y, "y");
         assertCartesianParameter(z, "z");
     }
 
-    //note that assert is for degrees (you set values in degrees), calculated in radians
+    /**
+     * Asserts all spheric coordinate parameters
+     * note that assert is for degrees (you set values in degrees), calculated in radians
+     * @see {@link org.wahlzeit.model.SphericCoordinate}
+     * @param latitude
+     * @param longitude
+     * @param radius
+     */
     public static void assertAllSphericParameters(double latitude, double longitude, double radius){
 
         assertSphericParameter(latitude, 180, 0.0, "latitude");
@@ -74,6 +105,12 @@ public class CoordinateUtil {
 
     }
 
+    /**
+     * Asserts that object is not null
+     * @param object
+     * @param parameterName
+     * @param <T>
+     */
     public static <T> void isNotNull(T object, String parameterName){
 
         if (object == null) {
@@ -82,6 +119,17 @@ public class CoordinateUtil {
 
     }
 
+    /**
+     * Asserts distance that
+     * <ul>
+     *     <li>not null</li>
+     *     <li>not NaN</li>
+     *     <li>not infinite</li>
+     *     <li>distance not negative</li>
+     * </ul>
+     * @param distance
+     * @param parameterName
+     */
     public static void assertDistance(double distance, String parameterName) {
 
         isNotNull(distance, parameterName);
@@ -97,8 +145,6 @@ public class CoordinateUtil {
         if (distance < 0 ) {
             throw new IllegalStateException("IllegalStateException: " + parameterName + " is NEGATIVE.");
         }
-
-
     }
 
 }
