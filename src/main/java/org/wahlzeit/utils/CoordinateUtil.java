@@ -33,7 +33,7 @@ public class CoordinateUtil {
      * @param val
      * @param parameterName
      */
-    public static void assertCartesianParameter(double val, String parameterName) {
+    public static void assertCartesianParameter(double val, String parameterName) throws Exception{
 
         isNotNull(val, parameterName);
 
@@ -53,7 +53,8 @@ public class CoordinateUtil {
      * @param lowerRange
      * @param parameterName
      */
-    public static void assertSphericParameter(double val, double upperRange, double lowerRange, String parameterName) {
+    public static void assertSphericParameter(double val, double upperRange, double lowerRange, String parameterName) throws Exception{
+
 
         isNotNull(val, parameterName);
 
@@ -83,7 +84,7 @@ public class CoordinateUtil {
      * @param y
      * @param z
      */
-    public static void assertAllCartesianParameters(double x, double y, double z){
+    public static void assertAllCartesianParameters(double x, double y, double z) throws Exception{
         assertCartesianParameter(x, "x");
         assertCartesianParameter(y, "y");
         assertCartesianParameter(z, "z");
@@ -97,7 +98,7 @@ public class CoordinateUtil {
      * @param longitude
      * @param radius
      */
-    public static void assertAllSphericParameters(double latitude, double longitude, double radius){
+    public static void assertAllSphericParameters(double latitude, double longitude, double radius) throws Exception{
 
         assertSphericParameter(latitude, 180, 0.0, "latitude");
         assertSphericParameter(longitude, 180, -180, "longitude");
@@ -111,7 +112,7 @@ public class CoordinateUtil {
      * @param parameterName
      * @param <T>
      */
-    public static <T> void isNotNull(T object, String parameterName){
+    public static <T> void isNotNull(T object, String parameterName) throws Exception{
 
         if (object == null) {
             throw new IllegalArgumentException("IllegalArgumentException: " + parameterName + " is NULL.");
@@ -130,7 +131,7 @@ public class CoordinateUtil {
      * @param distance
      * @param parameterName
      */
-    public static void assertDistance(double distance, String parameterName) {
+    public static void assertDistance(double distance, String parameterName) throws Exception{
 
         isNotNull(distance, parameterName);
 

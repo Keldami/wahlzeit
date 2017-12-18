@@ -6,7 +6,7 @@ import org.junit.Test;
 public class CoordinateUtilTest {
 
     @Test
-    public void assertCartesian(){
+    public void assertCartesian() throws Exception{
         try {
             CoordinateUtil.assertCartesianParameter(Double.NaN, "NaN");
             Assert.fail("this is NaN");
@@ -22,7 +22,7 @@ public class CoordinateUtilTest {
     }
 
     @Test
-    public void assertSpheric() {
+    public void assertSpheric() throws Exception{
         try {
             CoordinateUtil.assertSphericParameter(100, 50, 10, "too much");
             Assert.fail("this is too much");
@@ -46,7 +46,7 @@ public class CoordinateUtilTest {
     }
 
     @Test
-    public void notNullTest(){
+    public void notNullTest() throws Exception{
         try {
             CoordinateUtil.isNotNull(null, "null");
             Assert.fail("This should fail");

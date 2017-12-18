@@ -21,11 +21,11 @@ public class CartesianCoordinateTest {
 
 
     @Test
-    public void initTest() {
-        one = new CartesianCoordinate(1.0, 1.0, 1.0);
-        two = new CartesianCoordinate(1.0, 1.0, 1.0);
-        three = new CartesianCoordinate();
-        four = new CartesianCoordinate(2.0, 3.0, -1.0);
+    public void initTest() throws Exception{
+        one = CartesianCoordinate.create(1.0, 1.0, 1.0);
+        two = CartesianCoordinate.create(1.0, 1.0, 1.0);
+        three = CartesianCoordinate.create(0,0,0);
+        four = CartesianCoordinate.create(2.0, 3.0, -1.0);
         nowhere = new NoWhereCoordinate();
 
         assertTrue(one.isEqual(two));
@@ -35,79 +35,68 @@ public class CartesianCoordinateTest {
 
 
     @Test
-    public void testInvalidArgumentInitCoordinate() {
+    public void testExpectSameInstance() throws Exception{
+        for (int i = 0; i < 100; i++) {
+            double x = Math.random();
+            double y = Math.random();
+            double z = Math.random();
+
+            CartesianCoordinate coord1 = CartesianCoordinate.create(x, y, z);
+            CartesianCoordinate coord2 = CartesianCoordinate.create(x, y, z);
+            Assert.assertTrue(coord1.equals(coord2));
+        }
+    }
+
+    @Test
+    public void testInvalidArgumentInitCoordinate() throws Exception {
 
         double inf = MAX + MAX;
 
         try {
-            one = new CartesianCoordinate(Double.NaN, 0, 0);
+            one = CartesianCoordinate.create(Double.NaN, 0, 0);
         } catch (IllegalArgumentException e) {
         }
 
         try {
-            one = new CartesianCoordinate(0, Double.NaN, 0);
+            one = CartesianCoordinate.create(0, Double.NaN, 0);
         } catch (IllegalArgumentException e) {
         }
 
         try {
-            one = new CartesianCoordinate(0, 0, Double.NaN);
+            one = CartesianCoordinate.create(0, 0, Double.NaN);
         } catch (IllegalArgumentException e) {
         }
 
         try {
-            two = new CartesianCoordinate(inf, 0, 0);
+            two = CartesianCoordinate.create(inf, 0, 0);
             assert(Double.isInfinite(two.getX()));
         } catch (IllegalArgumentException e) {
         }
 
         try {
-            two = new CartesianCoordinate(0, inf, 0);
+            two = CartesianCoordinate.create(0, inf, 0);
             assert(Double.isInfinite(two.getY()));
         } catch (IllegalArgumentException e){
         }
 
         try {
-            two = new CartesianCoordinate(0, 0, inf);
+            two = CartesianCoordinate.create(0, 0, inf);
             assert(Double.isInfinite(two.getZ()));
         } catch (IllegalArgumentException e) {
         }
     }
 
-    @Test
-    public void setCartesianCoordinatesTest() {
-        one = new CartesianCoordinate();
-        one.setCartesianCoordinates(1,2, 3);
-        two = new CartesianCoordinate(1, 2, 3);
-        assert(one.isEqual(two) && two.isEqual(one));
-
-        three = new CartesianCoordinate();
-        try {
-            three.setCartesianCoordinates(Double.NaN, 0, 0);
-            three.setCartesianCoordinates(0, Double.NaN, 0);
-            three.setCartesianCoordinates(0, 0, Double.NaN);
-
-            three.setCartesianCoordinates(Double.POSITIVE_INFINITY, 0, 0);
-            three.setCartesianCoordinates(0, Double.POSITIVE_INFINITY, 0);
-            three.setCartesianCoordinates(0, 0, Double.POSITIVE_INFINITY);
-
-            three.setCartesianCoordinates(Double.NEGATIVE_INFINITY, 0, 0);
-            three.setCartesianCoordinates(0, Double.NEGATIVE_INFINITY, 0);
-            three.setCartesianCoordinates(0, 0, Double.NEGATIVE_INFINITY);
-
-        } catch (IllegalArgumentException e){
-        }
-    }
 
     @Test
-    public void SphericCoordinateParamConversionTest(){
+    public void SphericCoordinateParamConversionTest() throws Exception{
 
-        one = new CartesianCoordinate(0.5, 0.5, 0.5);
+        one = CartesianCoordinate.create(0.5, 0.5, 0.5);
 
         double longitude = one.asSphericCoordinate().getLongitude();
         double latitude = one.asSphericCoordinate().getLatitude();
         double radius = one.asSphericCoordinate().getRadius();
 
-        SphericCoordinate spheric = new SphericCoordinate(latitude, longitude, radius);
+        SphericCoordinate spheric = SphericCoordinate.create(latitude, longitude, radius);
         double x = spheric.asCartesianCoordinate().getX();
         double y = spheric.asCartesianCoordinate().getY();
         double z = spheric.asCartesianCoordinate().getZ();
@@ -127,44 +116,44 @@ public class CartesianCoordinateTest {
     }
 
     @Test
-    public void getDistanceTest() {
+    public void getDistanceTest() throws Exception{
 
-        CartesianCoordinate test = new CartesianCoordinate ( MAX , MAX, MAX);
-        CartesianCoordinate test2 = new CartesianCoordinate();
+        CartesianCoordinate test = CartesianCoordinate.create ( MAX , MAX, MAX);
+        CartesianCoordinate test2 = CartesianCoordinate.create(0,0,0);
 
         try {
             Double.isInfinite(test.getDistance(test2));
         } catch (IllegalStateException e) {
         }
 
-        one = new CartesianCoordinate();
-        two = new CartesianCoordinate();
+        one = CartesianCoordinate.create(0,0,0);
+        two = CartesianCoordinate.create(0,0,0);
         assert(one.getDistance(two) == two.getDistance(one) && one.getDistance(two) == 0.0);
 
-        one = new CartesianCoordinate(1, 2, 3);
-        two = new CartesianCoordinate(1, 2, 3);
+        one = CartesianCoordinate.create(1, 2, 3);
+        two = CartesianCoordinate.create(1, 2, 3);
         assert(one.getDistance(two) == two.getDistance(one));
     }
 
     @Test
-    public void isEqualTest() {
+    public void isEqualTest() throws Exception{
 
-        one = new CartesianCoordinate();
-        two = new CartesianCoordinate();
+        one = CartesianCoordinate.create(0,0,0);
+        two = CartesianCoordinate.create(0,0,0);
         assert(one.isEqual(two));
         assert(two.isEqual(one));
         assert(one.isEqual(one));
         assert(two.isEqual(two));
 
-        one = new CartesianCoordinate(3, 2, 1);
-        two = new CartesianCoordinate( 3, 2, 1);
+        one = CartesianCoordinate.create(3, 2, 1);
+        two = CartesianCoordinate.create( 3, 2, 1);
         assert(one.isEqual(two));
         assert(two.isEqual(one));
         assert(one.isEqual(one));
         assert(two.isEqual(two));
 
-        three = new CartesianCoordinate(1, 2, 3);
-        four = new CartesianCoordinate(-1, -2, -3);
+        three = CartesianCoordinate.create(1, 2, 3);
+        four = CartesianCoordinate.create(-1, -2, -3);
         assertFalse(three.isEqual(four));
         assertFalse(four.isEqual(three));
         assert(three.isEqual(three));
@@ -172,9 +161,9 @@ public class CartesianCoordinateTest {
     }
 
     @Test
-    public void equalsTest() {
-        one = new CartesianCoordinate();
-        two = new CartesianCoordinate();
+    public void equalsTest() throws Exception{
+        one = CartesianCoordinate.create(0,0,0);
+        two = CartesianCoordinate.create(0,0,0);
 
 
         assert(one.equals(two));
@@ -182,16 +171,16 @@ public class CartesianCoordinateTest {
         assert(one.equals(one));
         assert(two.equals(two));;
 
-        one = new CartesianCoordinate(3, 2, 1);
-        two = new CartesianCoordinate( 3, 2, 1);
+        one = CartesianCoordinate.create(3, 2, 1);
+        two = CartesianCoordinate.create( 3, 2, 1);
 
         assert(one.equals(two));
         assert(two.equals(one));
         assert(one.equals(one));
         assert(two.equals(two));
 
-        three = new CartesianCoordinate(1, 2, 3);
-        four = new CartesianCoordinate(-1, -2, -3);
+        three = CartesianCoordinate.create(1, 2, 3);
+        four = CartesianCoordinate.create(-1, -2, -3);
         assertFalse(three.equals(four));
         assertFalse(four.equals(three));
         assert(three.equals(three));
@@ -204,8 +193,8 @@ public class CartesianCoordinateTest {
 
     }
     @Test
-    public void squareTest() {
-        one = new CartesianCoordinate();
+    public void squareTest() throws Exception{
+        one = CartesianCoordinate.create(0,0,0);
 
 
         assert(one.square(2) == 4);
@@ -221,15 +210,15 @@ public class CartesianCoordinateTest {
     }
 
     @Test
-    public void toStringTest() {
+    public void toStringTest() throws Exception {
 
-        one = new CartesianCoordinate();
+        one = CartesianCoordinate.create(0,0,0);
         Assert.assertTrue(one.toString().compareTo("random text") < 0);
         Assert.assertTrue((one.toString()).compareTo("Coordinate: {x=0.0 y=0.0 z=0.0 }") == 0);
         Assert.assertFalse(one.toString().compareTo("random text") == 0);
         Assert.assertFalse(one.toString().compareTo("Coordinate: {x=0.0 y=0.0 z=0.0 }") < 0);
 
-        two = new CartesianCoordinate(1.0E-15, 1.0E-15,1.0E-15);
+        two = CartesianCoordinate.create(1.0E-15, 1.0E-15,1.0E-15);
         Assert.assertTrue(two.toString().compareTo("random text") < 0);
         Assert.assertTrue((two.toString()).compareTo("Coordinate: {x=1.0E-15 y=1.0E-15 z=1.0E-15 }") == 0);
         Assert.assertFalse(two.toString().compareTo("random text") == 0);

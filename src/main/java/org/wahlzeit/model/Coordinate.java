@@ -30,26 +30,28 @@ public interface Coordinate {
     /**
      * converts the current instance to {@link CartesianCoordinate}
      * @see #asSphericCoordinate()
+     * @throws Exception
      * @return instance of CarteisanCoordinate
      */
-    CartesianCoordinate asCartesianCoordinate();
+    CartesianCoordinate asCartesianCoordinate() throws Exception;
 
 
     /**
      * Converts current instance and other to {@link CartesianCoordinate}
      * Calculates and returns their euclidean distance
      * @param other
+     * @throws Exception
      * @return distance as double
      */
-    double getCartesianDistance(Coordinate other);
+    double getCartesianDistance(Coordinate other) throws Exception;
 
     /**
      * converts the current instance to {@link SphericCoordinate}
      * @see #asCartesianCoordinate()
-     *
+     * @throws Exception
      * @return instance of SphericCoordinate
      */
-    SphericCoordinate asSphericCoordinate();
+    SphericCoordinate asSphericCoordinate() throws Exception;
 
     /**
      * Converts current instance and other to {@link SphericCoordinate}
@@ -58,9 +60,10 @@ public interface Coordinate {
      *     https://en.wikipedia.org/wiki/Great-circle_distance#Computational_formulas
      *     </a>
      * @param other
+     * @throws Exception
      * @return distance as double
      */
-    double getSphericDistance(Coordinate other);
+    double getSphericDistance(Coordinate other) throws Exception;
 
     /**
      * Calculates the distance of given Coordinate-Type
@@ -68,14 +71,16 @@ public interface Coordinate {
      * @see #getSphericDistance(Coordinate)
      * @see #getCartesianDistance(Coordinate)
      * @param other
+     * @throws Exception
      * @return distance as double
      */
-    double getDistance(Coordinate other);
+    double getDistance(Coordinate other) throws Exception;
 
     /**
      * @param other
      * @return returns true if location and type is equal to other else returns false
      */
     boolean isEqual(Coordinate other);
+
 
 }

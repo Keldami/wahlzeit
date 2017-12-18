@@ -131,7 +131,7 @@ public class Photo extends DataObject {
 	@Parent
 	Key parent = ObjectManager.applicationRootKey;
 
-	/*
+	/**
 	 * location of the photo
 	 * initializes location at Coordinates x=0.0 y=0.0 z=0.0
 	 */

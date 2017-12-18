@@ -35,22 +35,16 @@ public class CartesianCoordinate extends AbstractCoordinate{
     private double z;
 
 
-    /*
-     *  @methodtype constructor
+    /**
+     * @param x
+     * @param y
+     * @param z
+     * @throws Exception
      */
-    public CartesianCoordinate(double x, double y, double z) {
+    private CartesianCoordinate(double x, double y, double z) throws Exception{
         this.setX(x);
         this.setY(y);
         this.setZ(z);
-    }
-
-    /*
-     *  @methodtype constructor
-     */
-    public CartesianCoordinate() {
-        this.setX(0);
-        this.setY(0);
-        this.setZ(0);
     }
 
     /*
@@ -74,37 +68,34 @@ public class CartesianCoordinate extends AbstractCoordinate{
         return z;
     }
 
-    /*
-     *  @methodtype set
+    /**
+     * private method used in constructor, <b>don't</b> use for further mutation
+     * @methodtype set
+     * @param x
      */
-    public void setX(double x) {
+    private void setX(double x) throws Exception{
         CoordinateUtil.assertCartesianParameter(x, "x");
         this.x = x;
     }
 
-    /*
-     *  @methodtype set
+    /**
+     * private method used in constructor, <b>don't</b> use for further mutation
+     * @methodtype set
+     * @param y
      */
-    public void setY(double y) {
+    private void setY(double y) throws Exception{
         CoordinateUtil.assertCartesianParameter(y, "y");
         this.y = y;
     }
 
-    /*
-     *  @methodtype set
+    /**
+     * private method used in constructor, <b>don't</b> use for further mutation
+     * @methodtype set
+     * @param z
      */
-    public void setZ(double z) {
+    private void setZ(double z) throws Exception{
         CoordinateUtil.assertCartesianParameter(z, "z");
         this.z = z;
-    }
-
-    /*
-     *  @methodtype set
-     */
-    public void setCartesianCoordinates(double x, double y, double z) {
-        setX(x);
-        setY(y);
-        setZ(z);
     }
 
     /**
@@ -114,7 +105,7 @@ public class CartesianCoordinate extends AbstractCoordinate{
     public CartesianCoordinate getCartesianCoordinate() { return this; }
 
     @Override
-    public double getCartesianDistance(Coordinate other) {
+    public double getCartesianDistance(Coordinate other) throws Exception{
 
         //should work without start (as this.asCartesianCoordinate)
         CartesianCoordinate start = this.asCartesianCoordinate();
@@ -144,7 +135,7 @@ public class CartesianCoordinate extends AbstractCoordinate{
     }
 
     @Override
-    public double getSphericDistance(Coordinate other) {
+    public double getSphericDistance(Coordinate other) throws Exception{
         return this.asSphericCoordinate().getSphericDistance(other.asSphericCoordinate());
     }
 
@@ -157,12 +148,11 @@ public class CartesianCoordinate extends AbstractCoordinate{
      * longitude = atan2(x, -z)
      * @see CartesianCoordinate#asCartesianCoordinate()
      * @see SphericCoordinate#asCartesianCoordinate()
+     * @throws Exception
      * @return instance of SphericCoordinate
      */
     @Override
-    public SphericCoordinate asSphericCoordinate() {
-
-        SphericCoordinate asSpheric = new SphericCoordinate();
+    public SphericCoordinate asSphericCoordinate() throws Exception{
 
         double radius = Math.sqrt(square(this.getX()) + square(this.getY()) + square(this.getZ()));
         double latitude = Math.toDegrees(Math.asin(this.getY() / radius));
@@ -170,11 +160,7 @@ public class CartesianCoordinate extends AbstractCoordinate{
 
         CoordinateUtil.assertAllSphericParameters(latitude, longitude, radius);
 
-        asSpheric.setLatitude(latitude);
-        asSpheric.setLongitude(longitude);
-        asSpheric.setRadius(radius);
-
-        return asSpheric;
+        return SphericCoordinate.create(latitude, longitude, radius);
     }
 
     @Override
@@ -194,11 +180,14 @@ public class CartesianCoordinate extends AbstractCoordinate{
         if(!(other instanceof CartesianCoordinate)) {
             return false;
         }
-
-        if( Double.compare(this.getX(),  other.asCartesianCoordinate().getX()) == 0 &&
-                Double.compare(this.getY(), other.asCartesianCoordinate().getY()) == 0 &&
-                Double.compare(this.getZ(), other.asCartesianCoordinate().getZ()) == 0 ) {
-            return true;
+        try {
+            if (Double.compare(this.getX(), other.asCartesianCoordinate().getX()) == 0 &&
+                    Double.compare(this.getY(), other.asCartesianCoordinate().getY()) == 0 &&
+                    Double.compare(this.getZ(), other.asCartesianCoordinate().getZ()) == 0) {
+                return true;
+            }
+        } catch (Exception e){
+            return false;
         }
         return false;
     }
@@ -253,5 +242,17 @@ public class CartesianCoordinate extends AbstractCoordinate{
         return "Coordinate: {x=" + x + " y=" + y + " z=" + z + " }";
     }
 
+    /**
+     * creates new instances of cartesian coordinates
+     * used to valueobjectify the class
+     * @param x
+     * @param y
+     * @param z
+     * @return
+     * @throws Exception
+     */
+    public static CartesianCoordinate create(double x, double y, double z) throws  Exception{
+        return new CartesianCoordinate(x, y, z);
+    }
 
 }

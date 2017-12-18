@@ -2,7 +2,7 @@ package org.wahlzeit.model;
 
 import org.junit.*;
 
-public class LocationTest {
+public class LocationTest  {
 
     Location loc1 = new Location();
 
@@ -30,18 +30,18 @@ public class LocationTest {
     Location loc6;
 
     @Test
-    public void initTest() {
+    public void initTest() throws Exception{
 
         loc4 = new Location();
-        loc5 = new Location(new CartesianCoordinate());
-        loc6 = new Location(new CartesianCoordinate(1, 2, 3));
+        loc5 = new Location(CartesianCoordinate.create(0, 0, 0));
+        loc6 = new Location(CartesianCoordinate.create(1, 2, 3));
         System.out.println(loc5.getCoordinate());
 
 
     }
 
     @Test
-    public void setCoordinateTest() {
+    public void setCoordinateTest() throws Exception{
 
         loc4 = new Location();
         loc5 = new Location();
@@ -52,12 +52,12 @@ public class LocationTest {
         } catch (IllegalArgumentException e) {
         }
 
-        loc5.setCoordinate(new CartesianCoordinate(1, 2, 3));
+        loc5.setCoordinate(CartesianCoordinate.create(1, 2, 3));
         assert(loc5.getCoordinate().asCartesianCoordinate().getX() == 1.0);
         assert(loc5.getCoordinate().asCartesianCoordinate().getY() == 2.0);
         assert(loc5.getCoordinate().asCartesianCoordinate().getZ() == 3.0);
 
-        loc6.setCoordinate(new CartesianCoordinate());
+        loc6.setCoordinate(CartesianCoordinate.create(0,0,0));
         assert(loc6.getCoordinate().asCartesianCoordinate().getX() == 0);
         assert(loc6.getCoordinate().asCartesianCoordinate().getY() == 0);
         assert(loc6.getCoordinate().asCartesianCoordinate().getZ() == 0);

@@ -33,18 +33,18 @@ public abstract class AbstractCoordinate implements Coordinate{
     public abstract boolean isEqual(Coordinate other);
 
     @Override
-    public abstract CartesianCoordinate asCartesianCoordinate();
+    public abstract CartesianCoordinate asCartesianCoordinate() throws Exception;
 
     @Override
-    public abstract double getCartesianDistance(Coordinate other);
+    public abstract double getCartesianDistance(Coordinate other) throws Exception;
 
     @Override
-    public abstract double getSphericDistance(Coordinate other);
+    public abstract double getSphericDistance(Coordinate other) throws Exception;
 
     @Override
-    public abstract SphericCoordinate asSphericCoordinate();
+    public abstract SphericCoordinate asSphericCoordinate() throws Exception;
 
-    public double getDistance(Coordinate other) {
+    public double getDistance(Coordinate other) throws Exception {
 
         if(other instanceof CartesianCoordinate){
 

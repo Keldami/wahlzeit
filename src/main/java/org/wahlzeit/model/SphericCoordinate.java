@@ -34,16 +34,10 @@ public class SphericCoordinate extends AbstractCoordinate {
     private double longitude;
     private double radius;
 
-    public SphericCoordinate(double latitude, double longitude, double radius){
+    private SphericCoordinate(double latitude, double longitude, double radius) throws Exception{
         this.setLatitude(latitude);
         this.setLongitude(longitude);
         this.setRadius(radius);
-    }
-
-    public SphericCoordinate() {
-        this.setLatitude(0);
-        this.setLongitude(0);
-        this.setRadius(0);
     }
 
     public double getLatitude(){
@@ -59,18 +53,30 @@ public class SphericCoordinate extends AbstractCoordinate {
     }
 
 
-    public void setLatitude(double latitude){
+    /**
+     * private method used in constructor, <b>don't</b> use for further mutation
+     * @param latitude
+     */
+    private void setLatitude(double latitude) throws Exception{
         CoordinateUtil.assertSphericParameter(latitude, 180, 0, "latitude");
         this.latitude = latitude;
     }
 
-    public void setLongitude(double longitude) {
+    /**
+     * private method used in constructor, don't use for further mutation
+     * @param longitude
+     */
+    private void setLongitude(double longitude) throws Exception{
         CoordinateUtil.assertSphericParameter(longitude, 180, -180, "longitude");
         this.longitude = longitude;
 
     }
 
-    public void setRadius(double radius) {
+    /**
+     * private method used in constructor, don't use for further mutation
+     * @param radius
+     */
+    private void setRadius(double radius) throws Exception{
         CoordinateUtil.assertSphericParameter(radius, Double.POSITIVE_INFINITY, 0, "radius");
         this.radius = radius;
 
@@ -80,7 +86,7 @@ public class SphericCoordinate extends AbstractCoordinate {
     // \,\zeta =\arccos \left(\sin(\phi _{A})\cdot \sin(\phi _{B})+\cos(\phi _{A})\cdot \cos(\phi _{B})\cdot \cos(\lambda _{B}-\lambda _{A})\right)
     // ( arccos(sin(latitude(a)) * sin(latitude(b) + cos(latitude(a)) * cos (latitude(b)) * cos(longitude(a) -longitude(b)) ) * radius
     @Override
-    public double getSphericDistance(Coordinate other) {
+    public double getSphericDistance(Coordinate other) throws Exception{
 
         //could works without start, but it's a safer implementation(?)
         SphericCoordinate start = this.asSphericCoordinate();
@@ -110,7 +116,7 @@ public class SphericCoordinate extends AbstractCoordinate {
     }
 
     @Override
-    public double getCartesianDistance(Coordinate other) {
+    public double getCartesianDistance(Coordinate other) throws Exception{
         return this.asCartesianCoordinate().getCartesianDistance(other.asCartesianCoordinate());
     }
 
@@ -128,9 +134,7 @@ public class SphericCoordinate extends AbstractCoordinate {
      * @return instance of CartesianCoordinate
      */
     @Override
-    public CartesianCoordinate asCartesianCoordinate() {
-
-        CartesianCoordinate asCartesian = new CartesianCoordinate();
+    public CartesianCoordinate asCartesianCoordinate() throws Exception{
 
         double x = this.getRadius() * Math.cos(Math.toRadians(this.getLatitude()))
                 * Math.sin(Math.toRadians(this.getLongitude()));
@@ -142,11 +146,7 @@ public class SphericCoordinate extends AbstractCoordinate {
 
         CoordinateUtil.assertAllCartesianParameters(x, y, z);
 
-        asCartesian.setX(x);
-        asCartesian.setY(y);
-        asCartesian.setZ(z);
-
-        return asCartesian;
+        return CartesianCoordinate.create(x, y, z);
     }
 
     @Override
@@ -160,11 +160,14 @@ public class SphericCoordinate extends AbstractCoordinate {
         if(!(other instanceof SphericCoordinate)) {
             return false;
         }
-
-        if( Double.compare(this.getLatitude(),  other.asSphericCoordinate().getLatitude()) == 0 &&
-                Double.compare(this.getLongitude(), other.asSphericCoordinate().getLongitude()) == 0 &&
-                Double.compare(this.getRadius(), other.asSphericCoordinate().getRadius()) == 0 ) {
-            return true;
+        try {
+            if (Double.compare(this.getLatitude(), other.asSphericCoordinate().getLatitude()) == 0 &&
+                    Double.compare(this.getLongitude(), other.asSphericCoordinate().getLongitude()) == 0 &&
+                    Double.compare(this.getRadius(), other.asSphericCoordinate().getRadius()) == 0) {
+                return true;
+            }
+        } catch (Exception e) {
+            return false;
         }
         return false;
     }
@@ -202,6 +205,10 @@ public class SphericCoordinate extends AbstractCoordinate {
     public String toString() {
         return "SphericCoordinate: {latitude=" + this.getLatitude() + " longitude=" +
                 this.getLongitude() + " radius=" + this.getRadius() + " }";
+    }
+
+    public static SphericCoordinate create(double latitude, double longitude, double radius) throws Exception {
+        return new SphericCoordinate(latitude, longitude, radius);
     }
 
 }

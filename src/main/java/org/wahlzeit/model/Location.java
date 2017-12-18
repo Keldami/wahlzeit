@@ -17,26 +17,50 @@ public class Location {
         if(coordinate == null) {
             throw new IllegalArgumentException("Coordinate can't be null");
         }
-        setCoordinate(coordinate);
+        try {
+            setCoordinate(coordinate);
+        }
+        catch (Exception e) {
+            //do nothing
+        }
     }
 
-    /*
-     *  @methodtype constructor
-     *  default is new CartesianCoordinate
+    /**
+     * @methodtype constructor
+     * default is new CartesianCoordinate
+     * @throws Exception
      */
     public Location() {
-        setCoordinate(new CartesianCoordinate());
+        try {
+            setCoordinate(CartesianCoordinate.create(0, 0, 0));
+        }
+        catch (Exception e) {}
     }
 
     /**
      * Sets a Coordinate
      * @param other
      */
-    public void setCoordinate(Coordinate other) {
+    public void setCoordinate(Coordinate other) throws Exception{
         if (other == null) {
             throw new IllegalArgumentException("Can not set null as coordinate");
         }
-        this.coordinate = other;
+        if ( other instanceof CartesianCoordinate) {
+            this.coordinate = CartesianCoordinate.create(((CartesianCoordinate) other).getX(),
+                    ((CartesianCoordinate) other).getY(),
+                    ((CartesianCoordinate) other).getZ()
+            );
+        }
+        else if (other instanceof SphericCoordinate ) {
+            this.coordinate = SphericCoordinate.create(
+                    ((SphericCoordinate) other).getLatitude(),
+                    ((SphericCoordinate) other).getLongitude(),
+                    ((SphericCoordinate) other).getRadius());
+        }
+        else {
+            //NoWhereCoordinate immutable by default
+            this.coordinate = new NoWhereCoordinate();
+        }
     }
 
     /*
@@ -52,12 +76,17 @@ public class Location {
      * @see {@link SphericCoordinate#getSphericDistance(Coordinate)}
      * @see {@link CartesianCoordinate#getCartesianDistance(Coordinate)}
      * @param other
-     * @return
+     * @return the distance between 2 coordinates of -1 if getDistance failed
      */
     public double getDistance(Coordinate other) {
         if (other == null) {
             throw new IllegalArgumentException("You can't get distance to null");
         }
-        return coordinate.getDistance(other);
+        try {
+            return coordinate.getDistance(other);
+        } catch (Exception e) {
+            //TODO sad return of -1
+            return -1;
+        }
     }
 }

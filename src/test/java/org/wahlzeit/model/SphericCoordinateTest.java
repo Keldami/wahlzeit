@@ -20,11 +20,11 @@ public class SphericCoordinateTest {
 
 
     @Before
-    public void init() {
-        one = new SphericCoordinate(45.0, 30.0, 1.5);
-        two = new SphericCoordinate(45.0, 30.0, 1.5);
-        three = new SphericCoordinate();
-        four = new SphericCoordinate(20.0, 20.0, 0.0);
+    public void init() throws Exception{
+        one = SphericCoordinate.create(45.0, 30.0, 1.5);
+        two = SphericCoordinate.create(45.0, 30.0, 1.5);
+        three = SphericCoordinate.create(0,0,0);
+        four = SphericCoordinate.create(20.0, 20.0, 0.0);
         nowhere = new NoWhereCoordinate();
 
         assertTrue(one.isEqual(two));
@@ -34,39 +34,39 @@ public class SphericCoordinateTest {
 
 
     @Test
-    public void testInvalidArgumentInitCoordinate() {
+    public void testInvalidArgumentInitCoordinate() throws Exception{
 
         double inf = MAX + MAX;
 
         try {
-            one = new SphericCoordinate(Double.NaN, 0, 0);
+            one = SphericCoordinate.create(Double.NaN, 0, 0);
         } catch (IllegalArgumentException e) {
         }
 
         try {
-            one = new SphericCoordinate(0, Double.NaN, 0);
+            one = SphericCoordinate.create(0, Double.NaN, 0);
         } catch (IllegalArgumentException e) {
         }
 
         try {
-            one = new SphericCoordinate(0, 0, Double.NaN);
+            one = SphericCoordinate.create(0, 0, Double.NaN);
         } catch (IllegalArgumentException e) {
         }
 
         try {
-            two = new SphericCoordinate(inf, 0, 0);
+            two = SphericCoordinate.create(inf, 0, 0);
             assert(Double.isInfinite(two.getLatitude()));
         } catch (IllegalArgumentException e) {
         }
 
         try {
-            two = new SphericCoordinate(0, inf, 0);
+            two = SphericCoordinate.create(0, inf, 0);
             assert(Double.isInfinite(two.getLongitude()));
         } catch (IllegalArgumentException e){
         }
 
         try {
-            two = new SphericCoordinate(0, 0, inf);
+            two = SphericCoordinate.create(0, 0, inf);
             assert(Double.isInfinite(two.getRadius()));
         } catch (IllegalArgumentException e) {
         }
@@ -74,15 +74,15 @@ public class SphericCoordinateTest {
 
 
     @Test
-    public void CartesianCoordinateParamConversionTest(){
+    public void CartesianCoordinateParamConversionTest() throws Exception{
 
-        one = new SphericCoordinate(45.0, 30, 1.5);
+        one = SphericCoordinate.create(45.0, 30, 1.5);
 
         double x = one.asCartesianCoordinate().getX();
         double y = one.asCartesianCoordinate().getY();
         double z = one.asCartesianCoordinate().getZ();
 
-        CartesianCoordinate cart = new CartesianCoordinate(x, y, z);
+        CartesianCoordinate cart = CartesianCoordinate.create(x, y, z);
         double latitude = cart.asSphericCoordinate().getLatitude();
         double longitude = cart.asSphericCoordinate().getLongitude();
         double radius = cart.asSphericCoordinate().getRadius();
@@ -102,28 +102,28 @@ public class SphericCoordinateTest {
     }
 
     @Test
-    public void getDistanceTest() {
+    public void getDistanceTest() throws Exception{
 
-        SphericCoordinate test = new SphericCoordinate ( 0 , 0, MAX);
-        SphericCoordinate test2 = new SphericCoordinate();
+        SphericCoordinate test = SphericCoordinate.create ( 0 , 0, MAX);
+        SphericCoordinate test2 = SphericCoordinate.create(0,0,0);
 
         try {
             Double.isInfinite(test.getDistance(test2));
         } catch (IllegalStateException e) {
         }
 
-        one = new SphericCoordinate();
-        two = new SphericCoordinate();
+        one = SphericCoordinate.create(0,0,0);
+        two = SphericCoordinate.create(0,0,0);
         assert(one.getDistance(two) == two.getDistance(one) && one.getDistance(two) == 0.0);
 
-        one = new SphericCoordinate(1, 2, 3);
-        two = new SphericCoordinate(1, 2, 3);
+        one = SphericCoordinate.create(1, 2, 3);
+        two = SphericCoordinate.create(1, 2, 3);
         assert(one.getDistance(two) == two.getDistance(one));
 
-        one = new SphericCoordinate(45.0, 30.0, 1.5);
-        two = new SphericCoordinate(45.0, 30.0, 1.5);
-        three = new SphericCoordinate();
-        four = new SphericCoordinate(20.0, 20.0, 0.0);
+        one = SphericCoordinate.create(45.0, 30.0, 1.5);
+        two = SphericCoordinate.create(45.0, 30.0, 1.5);
+        three = SphericCoordinate.create(0,0,0);
+        four = SphericCoordinate.create(20.0, 20.0, 0.0);
 
 
         //TODO further enhance getDistanceTest
@@ -133,24 +133,24 @@ public class SphericCoordinateTest {
     }
 
     @Test
-    public void isEqualTest() {
+    public void isEqualTest() throws Exception{
 
-        one = new SphericCoordinate();
-        two = new SphericCoordinate();
+        one = SphericCoordinate.create(0,0,0);
+        two = SphericCoordinate.create(0,0,0);
         assert(one.isEqual(two));
         assert(two.isEqual(one));
         assert(one.isEqual(one));
         assert(two.isEqual(two));
 
-        one = new SphericCoordinate(3, 2, 1);
-        two = new SphericCoordinate( 3, 2, 1);
+        one = SphericCoordinate.create(3, 2, 1);
+        two = SphericCoordinate.create( 3, 2, 1);
         assert(one.isEqual(two));
         assert(two.isEqual(one));
         assert(one.isEqual(one));
         assert(two.isEqual(two));
 
-        three = new SphericCoordinate(1, 2, 3);
-        four = new SphericCoordinate(0, 0, 0);
+        three = SphericCoordinate.create(1, 2, 3);
+        four = SphericCoordinate.create(0, 0, 0);
         assertFalse(three.isEqual(four));
         assertFalse(four.isEqual(three));
         assert(three.isEqual(three));
@@ -158,9 +158,9 @@ public class SphericCoordinateTest {
     }
 
     @Test
-    public void equalsTest() {
-        one = new SphericCoordinate();
-        two = new SphericCoordinate();
+    public void equalsTest() throws Exception{
+        one = SphericCoordinate.create(0,0,0);
+        two = SphericCoordinate.create(0,0,0);
 
 
         assert(one.equals(two));
@@ -168,16 +168,16 @@ public class SphericCoordinateTest {
         assert(one.equals(one));
         assert(two.equals(two));;
 
-        one = new SphericCoordinate(3, 2, 1);
-        two = new SphericCoordinate( 3, 2, 1);
+        one = SphericCoordinate.create(3, 2, 1);
+        two = SphericCoordinate.create( 3, 2, 1);
 
         assert(one.equals(two));
         assert(two.equals(one));
         assert(one.equals(one));
         assert(two.equals(two));
 
-        three = new SphericCoordinate(1, 2, 3);
-        four = new SphericCoordinate(0, 0, 0);
+        three = SphericCoordinate.create(1, 2, 3);
+        four = SphericCoordinate.create(0, 0, 0);
         assertFalse(three.equals(four));
         assertFalse(four.equals(three));
         assert(three.equals(three));
@@ -192,16 +192,16 @@ public class SphericCoordinateTest {
 
 
     @Test
-    public void toStringTest() {
+    public void toStringTest() throws Exception{
 
-        one = new SphericCoordinate();
+        one = SphericCoordinate.create(0,0,0);
         Assert.assertTrue(one.toString().compareTo("random text") < 0);
         //System.out.println(one.toString());
         Assert.assertTrue((one.toString()).compareTo("SphericCoordinate: {latitude=0.0 longitude=0.0 radius=0.0 }") == 0);
         Assert.assertFalse(one.toString().compareTo("random text") == 0);
         Assert.assertFalse(one.toString().compareTo("SphericCoordinate: {latitude=0.0 longitude=0.0 radius=0.0 }") < 0);
 
-        two = new SphericCoordinate(1.0E-15, 1.0E-15,1.0E-15);
+        two = SphericCoordinate.create(1.0E-15, 1.0E-15,1.0E-15);
         Assert.assertTrue(two.toString().compareTo("random text") < 0);
         Assert.assertTrue((two.toString()).compareTo("SphericCoordinate: {latitude=1.0E-15 longitude=1.0E-15 radius=1.0E-15 }") == 0);
         Assert.assertFalse(two.toString().compareTo("random text") == 0);
