@@ -22,9 +22,9 @@ package org.wahlzeit.model;
 
 
 import org.wahlzeit.services.LogBuilder;
+import org.wahlzeit.utils.DesignPattern;
 
 import java.util.logging.Logger;
-
 
 /**
  * factory for leninPhotos
@@ -32,6 +32,7 @@ import java.util.logging.Logger;
  * @see {@link LeninPhotoManager}
  * @see {@link PhotoFactory}
  */
+@DesignPattern(patternName = "Factory", participants = {"PhotoFactory", "LeninPhoto"})
 public class LeninPhotoFactory extends PhotoFactory {
 
     private static final Logger log = Logger.getLogger(LeninPhotoFactory.class.getName());

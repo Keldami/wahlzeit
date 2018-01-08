@@ -21,9 +21,14 @@
 package org.wahlzeit.model;
 
 
+import org.wahlzeit.utils.DesignPattern;
+
 /**
  * Class is an abstract class for generic Coordinate implementation
+ * Prototype pattern used for easy conversion between coordinate classes
  */
+@DesignPattern(patternName = "Prototype", participants = {"SpericCoordinate", "CartesianCoordinate",
+                "NoWhereCoordinate"})
 public abstract class AbstractCoordinate implements Coordinate{
 
     public AbstractCoordinate() {

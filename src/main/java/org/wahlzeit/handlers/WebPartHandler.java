@@ -21,6 +21,7 @@
 package org.wahlzeit.handlers;
 
 import org.wahlzeit.model.UserSession;
+import org.wahlzeit.utils.DesignPattern;
 import org.wahlzeit.webparts.WebPart;
 
 import java.util.Map;
@@ -29,6 +30,7 @@ import java.util.Map;
 /**
  * The general interface for web partgs.
  */
+@DesignPattern(patternName = "Chain of responsibility")
 public interface WebPartHandler {
 
 	/**

@@ -21,10 +21,11 @@
 package org.wahlzeit.model;
 
 
+import org.wahlzeit.utils.DesignPattern;
+
 // null coordinate for location
+@DesignPattern(patternName = "Null Object")
 public class NoWhereCoordinate implements Coordinate{
-
-
 
     public NoWhereCoordinate() {
     }
