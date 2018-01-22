@@ -1,7 +1,5 @@
 package org.wahlzeit.model;
 
-import com.googlecode.objectify.annotation.Entity;
-import org.wahlzeit.services.DataObject;
 import org.wahlzeit.utils.DesignPattern;
 
 import java.util.Iterator;
@@ -12,13 +10,17 @@ import java.util.Set;
  * A Type of Lenin
  */
 @DesignPattern(patternName = "Type Object Pattern", participants = "Lenin.class")
-public class LeninType extends DataObject {
+public class LeninType{
 
     private String name;
     public LeninManager manager = LeninManager.getInstance();
-    protected LeninType superType = null;
+    private LeninType superType;
     protected Set<LeninType> subTypes = new java.util.HashSet<LeninType>();
 
+    /**
+     * Constructor of LeninType
+     * @param name
+     */
     public LeninType(String name){
         this.name = name;
     }

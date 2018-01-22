@@ -33,7 +33,7 @@ import com.googlecode.objectify.annotation.Subclass;
 @Subclass
 public class LeninPhoto extends Photo {
 
-    static Lenin typeInstance = null;
+    private Lenin typeInstance = null;
 
     public LeninPhoto() {
         super();
@@ -49,5 +49,9 @@ public class LeninPhoto extends Photo {
      */
     public void setTypeInstance(Lenin typeInstance) {
         this.typeInstance = typeInstance;
+    }
+
+    public Lenin getType() {
+        return typeInstance;
     }
 }

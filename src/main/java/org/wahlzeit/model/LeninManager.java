@@ -1,45 +1,58 @@
 package org.wahlzeit.model;
 
+import jdk.nashorn.internal.ir.annotations.Ignore;
+import org.wahlzeit.handlers.PartUtil;
 import org.wahlzeit.services.ObjectManager;
+import org.wahlzeit.utils.CoordinateUtil;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * A manager of the Lenin Type
  */
-public class LeninManager extends ObjectManager {
+public class LeninManager {
 
-    LinkedList<LeninType> leninList= new LinkedList<>();
-    HashMap<String, Lenin> leninHM = new HashMap<>();
-    public static LeninManager instance = new LeninManager();
+    private static final Map<String, LeninType> leninHM = new HashMap<>();
+
+    private final static LeninManager instance = new LeninManager();
+
+    private static final Logger log = Logger.getLogger(LeninManager.class.getName());
 
 
-    public LeninManager() {}
+    /**
+     * Creates new LeninTypes and saves them in a HashMap
+     * else returns LeninType in HashMap
+     * @param typeName
+     * @param supertype
+     * @return null if typeName.isEmpty ==true else returns unique LeninType
+     */
+    public LeninType createLeninType(String typeName, LeninType supertype){
 
-    public Lenin createLeninType(String typeName){
-        assertIsValidLeninTypeName(typeName);
+        if(typeName.isEmpty()) {
+           return null;
+        }
 
-        LeninType lt = getLeninType(typeName);
+        if (leninHM.containsKey(typeName)){
+            return leninHM.get(typeName);
+        }
 
-        Lenin result = lt.createInstance();
-        leninHM.put(result.getId(), result);
-        return result;
+        LeninType lt = new LeninType(typeName);
+        lt.setSuperType(supertype);
+
+        leninHM.putIfAbsent(typeName, lt);
+
+        return lt;
     }
 
     public static LeninManager getInstance() {
         return instance;
     }
 
-    private LeninType getLeninType(String typeName) {
-        return leninHM.get(typeName).getType();
+    public static LeninType getLeninType(String typeName) {
+        return leninHM.get(typeName);
     }
 
-    public void assertIsValidLeninTypeName(String typeName) {
-        if (typeName.isEmpty()){
-            try {
-                throw new Exception("typeName can't be empty");
-            } catch (Exception e){}
-        }
-    }
 }

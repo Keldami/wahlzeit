@@ -8,9 +8,11 @@ import org.wahlzeit.utils.DesignPattern;
 @DesignPattern(patternName = "Type Object Pattern", participants = "LeninType.class")
 public class Lenin {
 
+    private int buildDate;
 
-    protected LeninType type = null;
+    private final LeninType type;
     public LeninManager manager = LeninManager.getInstance();
+
 
     public Lenin(LeninType type) {
         this.type = type;
@@ -20,11 +22,17 @@ public class Lenin {
         return type;
     }
 
+    public void setBuildDate(int buildDate) {
+        this.buildDate = buildDate;
+    }
+
+    public int getBuildDate() {return buildDate;}
+
     /**
-     * the id is the typename of a type
+     * the name is the typename of a type
      * @return
      */
-    public String getId() {
+    public String getName() {
         return type.getName();
     }
 }
